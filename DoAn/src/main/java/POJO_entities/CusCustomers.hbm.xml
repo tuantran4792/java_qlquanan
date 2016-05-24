@@ -1,0 +1,51 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated May 22, 2016 3:15:17 PM by Hibernate Tools 4.0.0.Final -->
+<hibernate-mapping>
+    <class name="POJO_entities.CusCustomers" table="cus_customers" catalog="qlquanan">
+        <id name="id" type="java.lang.Long">
+            <column name="Id" />
+            <generator class="identity" />
+        </id>
+        <property name="code" type="string">
+            <column name="Code" length="50" not-null="true" />
+        </property>
+        <property name="customerName" type="string">
+            <column name="CustomerName" length="200" not-null="true" />
+        </property>
+        <property name="phone" type="string">
+            <column name="Phone" length="20" />
+        </property>
+        <property name="address" type="string">
+            <column name="Address" length="511" />
+        </property>
+        <property name="birthday" type="timestamp">
+            <column name="Birthday" length="19" />
+        </property>
+        <property name="email" type="string">
+            <column name="Email" length="200" />
+        </property>
+        <property name="isDeleted" type="boolean">
+            <column name="IsDeleted" not-null="true" />
+        </property>
+        <property name="createdDate" type="timestamp">
+            <column name="CreatedDate" length="19" not-null="true" />
+        </property>
+        <property name="createdUser" type="java.lang.Integer">
+            <column name="CreatedUser" />
+        </property>
+        <property name="updatedDate" type="timestamp">
+            <column name="UpdatedDate" length="19" />
+        </property>
+        <property name="updatedUser" type="java.lang.Integer">
+            <column name="UpdatedUser" />
+        </property>
+        <property name="deletedDate" type="timestamp">
+            <column name="DeletedDate" length="19" />
+        </property>
+        <property name="deletedUser" type="java.lang.Integer">
+            <column name="DeletedUser" />
+        </property>
+    </class>
+</hibernate-mapping>

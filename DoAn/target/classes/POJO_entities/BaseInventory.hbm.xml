@@ -1,0 +1,33 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated May 22, 2016 3:15:17 PM by Hibernate Tools 4.0.0.Final -->
+<hibernate-mapping>
+    <class name="POJO_entities.BaseInventory" table="base_inventory" catalog="qlquanan">
+        <id name="id" type="java.lang.Long">
+            <column name="ID" />
+            <generator class="identity" />
+        </id>
+        <many-to-one name="baseProduct" class="POJO_entities.BaseProduct" fetch="select">
+            <column name="ProductId" not-null="true" />
+        </many-to-one>
+        <property name="qtyAvailable" type="big_decimal">
+            <column name="QtyAvailable" precision="20" scale="4" not-null="true" />
+        </property>
+        <property name="cogs" type="big_decimal">
+            <column name="COGS" scale="4" not-null="true" />
+        </property>
+        <property name="updatedDate" type="timestamp">
+            <column name="UpdatedDate" length="19" />
+        </property>
+        <property name="updatedUser" type="int">
+            <column name="UpdatedUser" not-null="true" />
+        </property>
+        <property name="isDeleted" type="java.lang.Boolean">
+            <column name="IsDeleted" />
+        </property>
+        <property name="deletedUser" type="java.lang.Integer">
+            <column name="DeletedUser" />
+        </property>
+    </class>
+</hibernate-mapping>

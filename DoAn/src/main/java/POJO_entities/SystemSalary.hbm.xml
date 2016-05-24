@@ -1,0 +1,21 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated May 22, 2016 3:15:17 PM by Hibernate Tools 4.0.0.Final -->
+<hibernate-mapping>
+    <class name="POJO_entities.SystemSalary" table="system_salary" catalog="qlquanan">
+        <id name="id" type="long">
+            <column name="Id" />
+            <generator class="assigned" />
+        </id>
+        <many-to-one name="schWorkshift" class="POJO_entities.SchWorkshift" fetch="select">
+            <column name="WorkShiftId" not-null="true" />
+        </many-to-one>
+        <property name="basicSalary" type="long">
+            <column name="BasicSalary" not-null="true" />
+        </property>
+        <property name="isDeleted" type="boolean">
+            <column name="IsDeleted" not-null="true" />
+        </property>
+    </class>
+</hibernate-mapping>
