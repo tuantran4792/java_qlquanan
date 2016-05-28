@@ -34,5 +34,7 @@
 	<classpathentry kind="lib" path="C:/Users/TUANTRAN/Desktop/hibernate/hibernate-release-5.1.0.Final/lib/required/javassist-3.20.0-GA.jar"/>
 	<classpathentry kind="lib" path="C:/Users/TUANTRAN/Desktop/hibernate/hibernate-release-5.1.0.Final/lib/required/jboss-logging-3.3.0.Final.jar"/>
 	<classpathentry kind="lib" path="C:/Users/TUANTRAN/Desktop/hibernate-tools-3.2.0.ga.jar"/>
+	<classpathentry kind="lib" path="C:/Users/TUANTRAN/Desktop/commons-logging-1.2-bin/commons-logging-1.2/commons-logging-1.2.jar"/>
+	<classpathentry kind="lib" path="C:/Users/TUANTRAN/Desktop/mysql-connector-java-5.1.17-bin.jar/mysql-connector-java-5.1.17-bin.jar"/>
 	<classpathentry kind="output" path="target/classes"/>
 </classpath>
