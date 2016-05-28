@@ -6,6 +6,6 @@ import POJO_entities.SoSaleorderDetail;
 public class OrderModel {
 
 	  public SoSaleorder saleOrder ;
-	  public SoSaleorderDetail orderDetail;
+	  public List<SoSaleorderDetail> orderDetail;
 
 }

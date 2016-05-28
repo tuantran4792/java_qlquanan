@@ -100,15 +100,16 @@ public class OrderDAO {
 
 		try {
 			tran = session.beginTransaction();
-			//B1: Tạo Order
+			//B1: create Order
 			long OrderId = CreateOrder(order.saleOrder, userId, now);
 			
-			//B2: Tạo chi tiết OrderDetail
+			//B2: create OrderDetail
+			CreateOrderDetail(order.orderDetail, userId, now, salOrderId);
 			
-			//B3: Tạo phiếu thu ReceiptVoucher
+			//B3: create Phieu thu ReceiptVoucher
 			
-			//Lấy thông tin Order vừa thực hiện xong
-			
+			//Lay thong tin order vua tao xong
+			thisOrder = getOrder(OrderId);
 			tran.commit();
 		} catch (HibernateException ex) {
 		//Log the exception
@@ -120,10 +121,13 @@ public class OrderDAO {
 		return thisOrder;
 	}
 	
-	private long CreateReceiptVoucher(SoReceiptvoucher receipt){
+	private long CreateReceiptVoucher(SoReceiptvoucher receipt,long saleOrderId, int userId, Date now){
 		long receiptVoucherId = 0;
 		Session session = HibernateUtil.getSessionFactory().getCurrentSession();
 		try {
+			receipt.saleOrderId = saleOrderId;
+			receipt.createdDate = now;
+			receipt.createdUser = userId;
 			session.save(receipt);
 			receiptVoucherId = receipt.getId();
 		} 
@@ -154,4 +158,32 @@ public class OrderDAO {
 		}
 		return orderId;
 	}
+	
+	private void CreateOrderDetail(List<SoSaleorderDetail> details, int userId, Date now, long salOrderId)
+	{
+		Session session = HibernateUtil.getSessionFactory().openSession();
+		tran = session.beginTransaction();
+		
+		int maxSize = 20;
+		for ( int i=0; i< details.count; i++ ) {
+			details[i].saleOrderId = saleOrderId;
+			details[i].createdDate = now;
+			details[i].createdUser = userId;
+		    session.save(details[i]);
+		    if ( i % maxSize == 0 ) { //20, same as the JDBC batch size
+		        //flush a batch of inserts and release memory:
+		        session.flush();
+		        session.clear();
+		    }
+		}
+
+		tran.commit();
+		session.close();
+	}
+	
+	public SaleOrderModel updateSaleOrder(SaleOrderModel request)
+	{
+		
+	}
+	
 }
