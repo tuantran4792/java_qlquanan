@@ -32,7 +32,7 @@ public class OrderDAO {
 
 		 List<SoSaleorder> ds = null;
 
-		 Session session = HibernateUtil.getSessionFactory()
+		 Session session = h.getSessionFactory()
 
 		 .openSession();
 
@@ -62,9 +62,9 @@ public class OrderDAO {
 	
 	public SoSaleorder getOrder(long OrderId)
 	{
-		SoSaleorder order = new SoSaleorder();
+		 SoSaleorder order = new SoSaleorder();
 
-		 Session session = HibernateUtil.getSessionFactory().openSession();
+		 Session session = h.getSessionFactory().openSession();
 
 		 try {
 
@@ -93,7 +93,7 @@ public class OrderDAO {
 	 */
 	public SoSaleorder CreateSaleOrder(OrderModel order, int userId)
 	{
-		Session session = HibernateUtil.getSessionFactory().getCurrentSession();
+		Session session = h.getSessionFactory().getCurrentSession();
 
 		SoSaleorder thisOrder = new SoSaleorder();
 		Date now = new Date(); 
@@ -122,7 +122,7 @@ public class OrderDAO {
 	
 	private long CreateReceiptVoucher(SoReceiptvoucher receipt){
 		long receiptVoucherId = 0;
-		Session session = HibernateUtil.getSessionFactory().getCurrentSession();
+		Session session = h.getSessionFactory().getCurrentSession();
 		try {
 			session.save(receipt);
 			receiptVoucherId = receipt.getId();
@@ -137,7 +137,7 @@ public class OrderDAO {
 	}
 	private long CreateOrder(SoSaleorder order, int userId, Date now){
 		long orderId = 0;
-		Session session = HibernateUtil.getSessionFactory().getCurrentSession();
+		Session session = h.getSessionFactory().getCurrentSession();
 		try {
 		    if(order.getSaleUser() == null || order.getSaleUser() <= 0  ) order.setSaleUser(userId) ;
 			if(order.getSaleDate() == null) order.setSaleDate(now);
@@ -154,4 +154,5 @@ public class OrderDAO {
 		}
 		return orderId;
 	}
+	
 }
