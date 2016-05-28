@@ -1,46 +1,60 @@
 package Dao;
-import POJO_entities.SystemUserAccount;
-import POJO_entities.SystemGroup;
-import POJO_entities.SystemGroupRolelist;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.List;
+
+import org.hibernate.Criteria;
+import org.hibernate.HibernateException;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
+import org.hibernate.criterion.Restrictions;
+
+import POJO_entities.SystemUserAccount;
 import Untils.HibernateUtil;
 
 public class UserDAO {
 
 	Transaction tran;
-    HibernateUtil h;
+    //HibernateUtil h;
     
     public UserDAO() {
-		h = new HibernateUtil();
+		//h = new HibernateUtil();
 	}
     
-    public SystemUserAccount getUser(String username, String password){
-    	
-    	SystemUserAccount account = new SystemUserAccount();
-    	Session session = HibernateUtil.getSessionFactory().openSession();
+    public boolean getUser(String username, String password){
+        Session session = HibernateUtil.getSessionFactory().openSession();
 
-    			/* try {
+    	//Session session = h.getSessionFactory().openSession();
+    	boolean result = false;
 
-    				 account = (SystemUserAccount) session.get(SystemUserAccount.class );
+		 try {
 
-    			 } catch (HibernateException ex) {
+		// String stringQuery = String.format( "SELECT Username, Password FROM system_user_account WHERE Username='{0}' AND Password ='{1}' AND IsDeleted = 0 AND IsActived = 1", username,password);
+		 Criteria criteria = session.createCriteria(SystemUserAccount.class);
+		 criteria.add(Restrictions.eq("username", username));
+		 criteria.add(Restrictions.eq("password", password));
+	 
+		 return criteria.list().size() > 0 ? true: false;
 
+		// Query query = session.createQuery(stringQuery);
+		 
+		// int data = 0;
+		//  data = query.getFirstResult();
+		//  if(data > 0) result = true;
+		 } catch (HibernateException ex) {
 
-    				 System.err.println(ex);
+		 //Log the exception
 
-    			 } finally {
+		 System.err.println(ex);
 
-    			 session.close();
+		 } finally {
 
-    			 }
-    			 */
-    	return account;
+		 session.close();
+
+		 }
+    	return result;
     }
 	
 

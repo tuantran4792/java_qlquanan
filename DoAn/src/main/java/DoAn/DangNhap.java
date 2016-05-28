@@ -24,9 +24,14 @@ import java.awt.SystemColor;
 import javax.swing.JTextField;
 import java.awt.Font;
 import javax.swing.JButton;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
 
+import Dao.UserDAO;
+import DoAn.TongQuan;
 public class DangNhap extends JFrame {
 
+	UserDAO bll;
 	private JPanel contentPane;
 	private JTextField txtTaiKhoan;
 	private JTextField txtMatKhau;
@@ -34,6 +39,7 @@ public class DangNhap extends JFrame {
 	private JLabel lblMatKhau;
 	private JLabel lblPassword;
 	private JLabel lblUsername;
+	
 	
 	/**
 	 * Launch the application.
@@ -55,6 +61,7 @@ public class DangNhap extends JFrame {
 	 * Create the frame.
 	 */
 	public DangNhap() {
+		bll = new UserDAO();
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(150, 30, 1000, 700);
 		contentPane = new JPanel();
@@ -66,6 +73,17 @@ public class DangNhap extends JFrame {
 		contentPane.setLayout(null);
 		
 		JButton btnDangNhap = new JButton("Đăng Nhập");
+		btnDangNhap.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				String username = txtTaiKhoan.getText();
+				String password = txtMatKhau.getText();
+				boolean hasAccount = bll.getUser(username, password);
+				if(hasAccount) 
+				{
+					
+				}
+			}
+		});
 		btnDangNhap.setBounds(445, 400, 130, 50);
 		contentPane.add(btnDangNhap);
 		

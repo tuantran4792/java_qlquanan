@@ -32,7 +32,7 @@ public class OrderDAO {
 
 		 List<SoSaleorder> ds = null;
 
-		 Session session = HibernateUtil.getSessionFactory()
+		 Session session = h.getSessionFactory()
 
 		 .openSession();
 
@@ -62,9 +62,9 @@ public class OrderDAO {
 	
 	public SoSaleorder getOrder(long OrderId)
 	{
-		SoSaleorder order = new SoSaleorder();
+		 SoSaleorder order = new SoSaleorder();
 
-		 Session session = HibernateUtil.getSessionFactory().openSession();
+		 Session session = h.getSessionFactory().openSession();
 
 		 try {
 
@@ -93,23 +93,22 @@ public class OrderDAO {
 	 */
 	public SoSaleorder CreateSaleOrder(OrderModel order, int userId)
 	{
-		Session session = HibernateUtil.getSessionFactory().getCurrentSession();
+		Session session = h.getSessionFactory().getCurrentSession();
 
 		SoSaleorder thisOrder = new SoSaleorder();
 		Date now = new Date(); 
 
 		try {
 			tran = session.beginTransaction();
-			//B1: create Order
+			//B1: Tạo Order
 			long OrderId = CreateOrder(order.saleOrder, userId, now);
 			
-			//B2: create OrderDetail
-			CreateOrderDetail(order.orderDetail, userId, now, salOrderId);
+			//B2: Tạo chi tiết OrderDetail
 			
-			//B3: create Phieu thu ReceiptVoucher
+			//B3: Tạo phiếu thu ReceiptVoucher
 			
-			//Lay thong tin order vua tao xong
-			thisOrder = getOrder(OrderId);
+			//Lấy thông tin Order vừa thực hiện xong
+			
 			tran.commit();
 		} catch (HibernateException ex) {
 		//Log the exception
@@ -121,13 +120,10 @@ public class OrderDAO {
 		return thisOrder;
 	}
 	
-	private long CreateReceiptVoucher(SoReceiptvoucher receipt,long saleOrderId, int userId, Date now){
+	private long CreateReceiptVoucher(SoReceiptvoucher receipt){
 		long receiptVoucherId = 0;
-		Session session = HibernateUtil.getSessionFactory().getCurrentSession();
+		Session session = h.getSessionFactory().getCurrentSession();
 		try {
-			receipt.saleOrderId = saleOrderId;
-			receipt.createdDate = now;
-			receipt.createdUser = userId;
 			session.save(receipt);
 			receiptVoucherId = receipt.getId();
 		} 
@@ -141,7 +137,7 @@ public class OrderDAO {
 	}
 	private long CreateOrder(SoSaleorder order, int userId, Date now){
 		long orderId = 0;
-		Session session = HibernateUtil.getSessionFactory().getCurrentSession();
+		Session session = h.getSessionFactory().getCurrentSession();
 		try {
 		    if(order.getSaleUser() == null || order.getSaleUser() <= 0  ) order.setSaleUser(userId) ;
 			if(order.getSaleDate() == null) order.setSaleDate(now);
@@ -157,33 +153,6 @@ public class OrderDAO {
 			session.close();
 		}
 		return orderId;
-	}
-	
-	private void CreateOrderDetail(List<SoSaleorderDetail> details, int userId, Date now, long salOrderId)
-	{
-		Session session = HibernateUtil.getSessionFactory().openSession();
-		tran = session.beginTransaction();
-		
-		int maxSize = 20;
-		for ( int i=0; i< details.count; i++ ) {
-			details[i].saleOrderId = saleOrderId;
-			details[i].createdDate = now;
-			details[i].createdUser = userId;
-		    session.save(details[i]);
-		    if ( i % maxSize == 0 ) { //20, same as the JDBC batch size
-		        //flush a batch of inserts and release memory:
-		        session.flush();
-		        session.clear();
-		    }
-		}
-
-		tran.commit();
-		session.close();
-	}
-	
-	public SaleOrderModel updateSaleOrder(SaleOrderModel request)
-	{
-		
 	}
 	
 }

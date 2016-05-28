@@ -1,6 +1,10 @@
 package Untils;
 
 import org.hibernate.cfg.AnnotationConfiguration;
+import org.hibernate.cfg.Configuration;
+
+import java.io.File;
+
 import org.hibernate.SessionFactory;
 
 
@@ -11,8 +15,9 @@ public class HibernateUtil {
 	static { 
 
 			 try {
-			
-			 sessionFactory = new AnnotationConfiguration().configure().buildSessionFactory();
+			File file = new File("");
+			System.out.println("path:" + file.getAbsolutePath());
+			 sessionFactory = new Configuration().configure("hibernate.cfg.xml").buildSessionFactory();
 			
 			 } catch (Throwable ex) {
 			
@@ -31,3 +36,23 @@ public class HibernateUtil {
 	 }
 
 }
+
+/*
+public class HibernateUtil {
+
+    private final SessionFactory sessionFactory;
+
+    public HibernateUtil() {
+        try {
+            sessionFactory = new AnnotationConfiguration().configure().buildSessionFactory();
+        } catch (Throwable ex) {
+            System.err.println("Initial SessionFactory creation failed." + ex);
+            throw new ExceptionInInitializerError(ex);
+        }
+    }
+
+    public SessionFactory getSessionFactory() {
+        return sessionFactory;
+    }
+}
+*/
