@@ -8,7 +8,8 @@ import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 import javax.swing.JScrollBar;
 import javax.swing.JTextArea;
-
+import javax.swing.JLabel;
+import Model.GlobalModel;
 public class TongQuan extends JFrame {
 
 	private JPanel contentPane;
@@ -20,6 +21,7 @@ public class TongQuan extends JFrame {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
+					
 					TongQuan frame = new TongQuan();
 					frame.setVisible(true);
 				} catch (Exception e) {
@@ -47,5 +49,16 @@ public class TongQuan extends JFrame {
 		JTextArea textArea_1 = new JTextArea();
 		textArea_1.setBounds(270, 11, 451, 511);
 		contentPane.add(textArea_1);
+		
+		JLabel lblXinCho = new JLabel("Xin ch\u00E0o");
+		lblXinCho.setBounds(791, 0, 46, 14);
+		contentPane.add(lblXinCho);
+
+		GlobalModel data = new GlobalModel();
+		
+		JLabel lblName = new JLabel("Name");
+		lblName.setBounds(895, 0, 46, 14);
+		lblName.setText(data.getUsername());
+		contentPane.add(lblName);
 	}
 }

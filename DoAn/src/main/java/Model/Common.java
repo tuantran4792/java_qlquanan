@@ -1,5 +1,5 @@
 package Model;
-
+import java.security.MessageDigest;
 public class Common {
 
 	public class CodePrefix
@@ -9,5 +9,4 @@ public class Common {
         public final String DraftSaleOrder = "TX";
         public final String DraftReceiptVoucher = "TT";
     }
-
 }

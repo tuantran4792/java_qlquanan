@@ -1,4 +1,4 @@
-<<<<<<< HEAD
+
 package Dao;
 
 public class SettingDAO {
@@ -8,14 +8,3 @@ public class SettingDAO {
 	}
 
 }
-=======
-package Dao;
-
-public class SettingDAO {
-
-	public SettingDAO() {
-		// TODO Auto-generated constructor stub
-	}
-
-}
->>>>>>> origin/master

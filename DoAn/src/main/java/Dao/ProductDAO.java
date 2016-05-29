@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 package Dao;
 
 public class ProductDAO {
@@ -8,14 +7,3 @@ public class ProductDAO {
 	}
 
 }
-=======
-package Dao;
-
-public class ProductDAO {
-
-	public ProductDAO() {
-		// TODO Auto-generated constructor stub
-	}
-
-}
->>>>>>> origin/master

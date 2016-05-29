@@ -1,6 +1,5 @@
 package Untils;
 
-import org.hibernate.cfg.AnnotationConfiguration;
 import org.hibernate.cfg.Configuration;
 
 import java.io.File;
@@ -17,7 +16,7 @@ public class HibernateUtil {
 			 try {
 			File file = new File("");
 			System.out.println("path:" + file.getAbsolutePath());
-			 sessionFactory = new Configuration().configure("hibernate.cfg.xml").buildSessionFactory();
+			 sessionFactory = new Configuration().configure().buildSessionFactory();
 			
 			 } catch (Throwable ex) {
 			
