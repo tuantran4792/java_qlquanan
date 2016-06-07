@@ -32,6 +32,8 @@ import java.awt.event.ActionEvent;
 import Dao.UserDAO;
 import DoAn.TongQuan;
 import Model.GlobalModel;
+import Model.User.UserModel;
+
 public class DangNhap extends JFrame {
 
 	UserDAO bll;
@@ -81,8 +83,8 @@ public class DangNhap extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				String username = txtTaiKhoan.getText();
 				String password = txtMatKhau.getText();
-				boolean hasAccount = bll.getUser(username, password);
-				if(hasAccount) 
+				UserModel user = bll.getUser(username, password);
+				if(user.Username != "" && user.Paswword != "") 
 				{
 					GlobalModel data = new GlobalModel();
 					data.Username = username;
@@ -92,8 +94,10 @@ public class DangNhap extends JFrame {
 					TongQuan tq = new TongQuan();
 					
 					tq.setVisible(true);
-					
-					 
+				}
+				else
+				{
+					System.out.println("Thông tin không chính xác");
 				}
 			}
 		});

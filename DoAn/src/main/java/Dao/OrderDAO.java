@@ -32,9 +32,8 @@ public class OrderDAO {
 
 		 List<SoSaleorder> ds = null;
 
-		 Session session = h.getSessionFactory()
+	     Session session = HibernateUtil.getSessionFactory().openSession();
 
-		 .openSession();
 
 		 try {
 
@@ -64,7 +63,8 @@ public class OrderDAO {
 	{
 		 SoSaleorder order = new SoSaleorder();
 
-		 Session session = h.getSessionFactory().openSession();
+		 Session session =  HibernateUtil.getSessionFactory().openSession();
+
 
 		 try {
 
@@ -93,7 +93,8 @@ public class OrderDAO {
 	 */
 	public SoSaleorder CreateSaleOrder(OrderModel order, int userId)
 	{
-		Session session = h.getSessionFactory().getCurrentSession();
+		Session session = HibernateUtil.getSessionFactory().openSession();
+
 
 		SoSaleorder thisOrder = new SoSaleorder();
 		Date now = new Date(); 

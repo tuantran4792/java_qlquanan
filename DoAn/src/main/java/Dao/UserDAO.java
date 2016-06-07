@@ -2,7 +2,9 @@ package Dao;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
+import java.util.Set;
 
 import org.hibernate.Criteria;
 import org.hibernate.HibernateException;
@@ -11,9 +13,13 @@ import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.hibernate.criterion.Restrictions;
 
+import Model.User.UserModel;
+import POJO_entities.SystemUser;
 import POJO_entities.SystemUserAccount;
 import Untils.HibernateUtil;
 import java.security.MessageDigest;
+import Model.User.CreateUserModel;
+import POJO_entities.SystemUserAccount;
 
 public class UserDAO {
 
@@ -24,35 +30,32 @@ public class UserDAO {
 		//h = new HibernateUtil();
 	}
     
-    public boolean getUser(String username, String password)
+    public UserModel getUser(String username, String password)
     {
         Session session = HibernateUtil.getSessionFactory().openSession();
 
     	//Session session = h.getSessionFactory().openSession();
-    	boolean result = false;
-
-		 try {
-
+        UserModel result = new UserModel();
+		try {
 		// String stringQuery = String.format( "SELECT Username, Password FROM system_user_account WHERE Username='{0}' AND Password ='{1}' AND IsDeleted = 0 AND IsActived = 1", username,password);
 		 Criteria criteria = session.createCriteria(SystemUserAccount.class);
 		 String hashPassword;
-		try {
-			hashPassword = toMD5(password);
-			criteria.add(Restrictions.eq("password", hashPassword));
-
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+			try {
+				hashPassword = toMD5(password);
+				criteria.add(Restrictions.eq("password", hashPassword));
+	
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		 criteria.add(Restrictions.eq("username", username));
-	 
-		 return criteria.list().size() > 0 ? true: false;
-
-		// Query query = session.createQuery(stringQuery);
 		 
-		// int data = 0;
-		//  data = query.getFirstResult();
-		//  if(data > 0) result = true;
+		 if(criteria.list().size() > 0)
+		 {	SystemUserAccount temp = (SystemUserAccount) criteria.list().get(0);
+		 	result.Username = temp.getUsername();
+		 	result.Paswword = temp.getPassword();
+		 	result.setGroupId(temp.getGroupId());
+		 }	
 		 } catch (HibernateException ex) {
 
 		 //Log the exception
@@ -87,6 +90,45 @@ public class UserDAO {
    	     	hexString.append(hex);
     	}
     	return hexString.toString();
+    }
+    
+    public boolean CreateUser(CreateUserModel request, int createUser){
+    	
+    	boolean result = false;
+		try {
+			Session session = HibernateUtil.getSessionFactory().openSession();
+			 Transaction transaction = null;
+
+			 try {
+
+			 transaction = session.beginTransaction();
+			 SystemUserAccount model = new SystemUserAccount();
+			 model.setSystemUsers((Set<SystemUser>) request.userInfo);
+			
+			 session.save(model);
+			 transaction.commit();
+
+			 } catch (HibernateException ex) {
+
+			 //Log the exception
+
+			 transaction.rollback();
+
+			 System.err.println(ex);
+
+			 } finally {
+
+			 session.close();
+
+			 }
+
+			 return true;
+
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+    	return result;
     }
 
 }
