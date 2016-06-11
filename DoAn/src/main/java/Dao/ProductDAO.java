@@ -35,7 +35,8 @@ public class ProductDAO {
 		    	result = criteria.list();
 		    }
 		catch (HibernateException ex) {
-			 
+		//test abc
+	  //test cdedeed
 		System.err.println(ex);
 		//Log the exception
 		}
