@@ -74,7 +74,7 @@ public class HangHoa extends JFrame {
 		
 		
 		String[] columnNames = new String[]{"Mã",
-                "Tên hàng hóa",
+                "Tên hàng hó",
                 "Nhóm hàng",
                 "Giá bán",
                 "Số lượng"};
