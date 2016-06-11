@@ -38,6 +38,8 @@ public class ProductDAO {
 		//test abc
 	  //test cdedeed
 			//aaaaaaa
+			//tetetetet
+			//Phuoc khin
 		System.err.println(ex);
 		//Log the exception
 		}
