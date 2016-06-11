@@ -75,4 +75,11 @@ public class CustomerDAO {
 	{
 		return new ArrayList<CusCustomers>();
 	}
+	
+	public boolean deleteCustomer(CusCustomers _cus){
+		boolean flag = false;
+		
+		return flag;
+		
+	}
 }
