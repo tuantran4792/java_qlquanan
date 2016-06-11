@@ -10,7 +10,7 @@ import javax.swing.JLabel;
 import javax.swing.JTextField;
 import javax.swing.JComboBox;
 
-public class NhapHang extends JFrame {
+public class ThemHang extends JFrame {
 
 	private JPanel contentPane;
 	private JTextField txtTenHang;
@@ -22,7 +22,7 @@ public class NhapHang extends JFrame {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					NhapHang frame = new NhapHang();
+					ThemHang frame = new ThemHang();
 					frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -34,7 +34,7 @@ public class NhapHang extends JFrame {
 	/**
 	 * Create the frame.
 	 */
-	public NhapHang() {
+	public ThemHang() {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(150, 30, 1000, 700);
 		contentPane = new JPanel();
