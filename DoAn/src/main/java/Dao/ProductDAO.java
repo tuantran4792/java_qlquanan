@@ -37,7 +37,7 @@ public class ProductDAO {
 		catch (HibernateException ex) {
 		//test ABC
 			
-			//CDS
+			//CDSA
 		System.err.println(ex);
 		//Log the exception
 		}
