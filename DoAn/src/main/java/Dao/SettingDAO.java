@@ -5,7 +5,7 @@ public class SettingDAO {
 
 	public SettingDAO() {
 		// TODO Auto-generated constructor stub
-		String test;
+		String tes2;
 	}
 
 }

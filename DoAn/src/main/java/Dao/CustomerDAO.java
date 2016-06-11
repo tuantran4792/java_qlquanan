@@ -26,13 +26,13 @@ public class CustomerDAO {
 	}
 	public CusCustomers getCustomer(long customerId)
 	{
-		CusCustomers order = new CusCustomers();
+		CusCustomers customer = new CusCustomers();
 
 		 Session session = h.getSessionFactory().openSession();
 
 		 try {
 
-		 order = (CusCustomers) session.get(CusCustomers.class, 
+			 customer = (CusCustomers) session.get(CusCustomers.class, 
 
 		 customerId);
 
@@ -48,7 +48,7 @@ public class CustomerDAO {
 
 		 }
 
-		 return order;
+		 return customer;
 	}
 	
 	public long createCustomer(CusCustomers customer)
