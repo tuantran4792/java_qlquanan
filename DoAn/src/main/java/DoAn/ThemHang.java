@@ -42,7 +42,7 @@ public class ThemHang extends JFrame {
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 		
-		JLabel lblTnHng = new JLabel("T\u00EAn h\u00E0ng:");
+		JLabel lblTnHng = new JLabel("Tên hàng:");
 		lblTnHng.setBounds(22, 52, 58, 14);
 		contentPane.add(lblTnHng);
 		
@@ -51,7 +51,7 @@ public class ThemHang extends JFrame {
 		contentPane.add(txtTenHang);
 		txtTenHang.setColumns(10);
 		
-		JLabel lblNhmHng = new JLabel("Nh\u00F3m h\u00E0ng:");
+		JLabel lblNhmHng = new JLabel("Nhóm hàng:");
 		lblNhmHng.setBounds(22, 94, 58, 14);
 		contentPane.add(lblNhmHng);
 		
