@@ -8,7 +8,7 @@ import org.hibernate.Session;
 import org.hibernate.criterion.Restrictions;
 
 import POJO_entities.BaseProduct;
-import POJO_entities.SystemUserAccount;
+
 import Untils.HibernateUtil;
 
 public class ProductDAO {
