@@ -210,7 +210,7 @@ public class TongQuan extends JFrame {
 		pHangHoa.add(btnThemHang);
 		btnThemHang.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				new ThemHang().setVisible(true);
+				new  NhapHang().setVisible(true);
 				setEnabled(false);
 			}
 		});
