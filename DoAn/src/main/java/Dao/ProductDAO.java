@@ -37,6 +37,7 @@ public class ProductDAO {
 		catch (HibernateException ex) {
 		//test abc
 	  //test cdedeed
+			//aaaaaaa
 		System.err.println(ex);
 		//Log the exception
 		}
