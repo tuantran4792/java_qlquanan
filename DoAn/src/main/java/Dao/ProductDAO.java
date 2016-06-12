@@ -30,6 +30,7 @@ public class ProductDAO {
 		Session session = HibernateUtil.getSessionFactory().openSession();
 
 		try{
+
 			Criteria criteria = session.createCriteria(BaseProduct.class);
 			criteria.add(Restrictions.sqlRestriction("isDeleted = 0"));
 			criteria.add(Restrictions.sqlRestriction("isActived = 1"));
@@ -95,8 +96,12 @@ public class ProductDAO {
 	public Integer addProduct(BaseProduct item, int UserId){
         int ProductId = 0;
 		Session session = HibernateUtil.getSessionFactory().openSession();
-
-		
+		Long row = (Long) session.createCriteria(BaseProduct.class).setProjection(Projections.rowCount()).uniqueResult();
+		if(item.getBarCode().isEmpty())
+ 		{
+ 			String newBarcode = cm.setPrefix(4,row);
+ 			item.setBarCode(newBarcode);	
+ 		}
 		Transaction transaction = null;
 	      try{
 	    	 transaction = session.beginTransaction();
@@ -107,18 +112,8 @@ public class ProductDAO {
 	    	 item.setIsDeleted(false);
 	    	 BigDecimal valDouble = new BigDecimal(1);
 	    	 item.setQtyAvailable(valDouble );
-	         session.save(item); 
-	         if(item.getBarCode().isEmpty())
-	 		{
-	 			String newBarcode = cm.setPrefix(4,item.getProductId());
-	 			item.setBarCode(newBarcode);
-	 			session.update(item);
-	 		
-	 		}
-	         
+	         session.save(item);
 	         transaction.commit();
-	         session.flush();
-	         session.close();
 	         
 	      }catch (HibernateException e) {
 	         if (transaction!= null) transaction.rollback();

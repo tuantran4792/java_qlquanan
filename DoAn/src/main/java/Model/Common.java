@@ -16,23 +16,23 @@ public class Common {
 		String result = "";
 		switch (type) {
 		case 1:
-			result = code.SaleOrder + Long.valueOf(Id).toString();
+			result = code.SaleOrder ;
 			break;
 		case 2:
-			result = code.ReceiptVoucher + Long.valueOf(Id).toString();
+			result = code.ReceiptVoucher;
 			break;
 		case 3:
-			result = code.DraftSaleOrder + Long.valueOf(Id).toString();
+			result = code.DraftSaleOrder ;
 			break;
 		case 4:
-			result = code.Product + Long.valueOf(Id).toString();
+			result = code.Product;
 			break;
 		case 5: 
-			result = code.Customer + Long.valueOf(Id).toString();
+			result = code.Customer;
 			break;
 		default:
 			break;
 		}
-		return result;
+		return result + Long.valueOf(Id + 1).toString() ;
 	}
 }
