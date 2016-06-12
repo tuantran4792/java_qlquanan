@@ -11,19 +11,24 @@ import javax.swing.JLabel;
 import javax.swing.JTextField;
 import javax.swing.JComboBox;
 import java.awt.Font;
+import java.awt.Frame;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.math.BigDecimal;
 
 import javax.swing.SwingConstants;
 import javax.swing.JButton;
 import DoAn.TongQuan;
-
+import Model.GlobalModel;
+import Dao.ProductDAO;
+import POJO_entities.BaseProduct;
 public class ThemHang extends JFrame {
 
 	private JPanel contentPane;
 	private JTextField txtMaHang, txtTenHang, txtNCC, txtDonGia, txtVAT;
-
+	ProductDAO model;
+	GlobalModel global = new GlobalModel();
 	/**
 	 * Launch the application.
 	 */
@@ -44,6 +49,7 @@ public class ThemHang extends JFrame {
 	 * Create the frame.
 	 */
 	public ThemHang() {
+		model = new ProductDAO();
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		Dimension dimension = Toolkit.getDefaultToolkit().getScreenSize();
 		setBounds(dimension.width / 3, dimension.height / 5, 405, 410);
@@ -62,6 +68,7 @@ public class ThemHang extends JFrame {
 		contentPane.add(lblMaHang);
 		
 		txtMaHang = new JTextField();
+		txtMaHang.setToolTipText("nhập mã hàng");
 		txtMaHang.setHorizontalAlignment(SwingConstants.LEFT);
 		txtMaHang.setBounds(132, 69, 224, 20);
 		contentPane.add(txtMaHang);
@@ -116,6 +123,21 @@ public class ThemHang extends JFrame {
 		txtVAT.setColumns(10);
 		
 		JButton btnThem = new JButton("Thêm");
+		btnThem.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				BaseProduct item = new BaseProduct();
+				item.setBarCode(txtMaHang.getText());
+				item.setProductName(txtTenHang.getText());
+				item.setRetailPrice(new BigDecimal( txtDonGia.getText()));
+				item.setCategoryId(Long.valueOf(1));
+			
+			int ProductId =  model.addProduct(item, 0);
+			if(ProductId > 0)
+				{
+				dispose();
+				}
+			}
+		});
 		btnThem.setFont(new Font("Tahoma", Font.BOLD, 13));
 		btnThem.setBounds(133, 310, 100, 40);
 		contentPane.add(btnThem);

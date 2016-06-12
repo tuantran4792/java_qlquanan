@@ -6,7 +6,7 @@ public final class GlobalModel {
 //		// TODO Auto-generated constructor stub
 //	}
 	static public String Username;
-	static public long UserId;
+	static public Integer UserId;
 	static public long RoleId;
 	public String getUsername() {
 		return Username;
@@ -14,10 +14,10 @@ public final class GlobalModel {
 	public void setUsername(String username) {
 		Username = username;
 	}
-	public long getUserId() {
+	public Integer getUserId() {
 		return UserId;
 	}
-	public void setUserId(long userId) {
+	public void setUserId(Integer userId) {
 		UserId = userId;
 	}
 	public long getRoleId() {

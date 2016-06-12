@@ -37,7 +37,7 @@ public class UserDAO {
     	//Session session = h.getSessionFactory().openSession();
         UserModel result = new UserModel();
 		try {
-		// String stringQuery = String.format( "SELECT Username, Password FROM system_user_account WHERE Username='{0}' AND Password ='{1}' AND IsDeleted = 0 AND IsActived = 1", username,password);
+		// String stringQuery = String.format( "SELECT Id, Username, Password FROM system_user_account WHERE Username='{0}' AND Password ='{1}' AND IsDeleted = 0 AND IsActived = 1", username,password);
 		 Criteria criteria = session.createCriteria(SystemUserAccount.class);
 		 String hashPassword;
 			try {
@@ -52,9 +52,10 @@ public class UserDAO {
 		 
 		 if(criteria.list().size() > 0)
 		 {	SystemUserAccount temp = (SystemUserAccount) criteria.list().get(0);
-		 	result.Username = temp.getUsername();
-		 	result.Paswword = temp.getPassword();
-		 	result.setGroupId(temp.getGroupId());
+		 result.setUserId(temp.getId());
+		 result.Username = temp.getUsername();
+		 result.Paswword = temp.getPassword();	
+		 result.setGroupId(temp.getGroupId());
 		 }	
 		 } catch (HibernateException ex) {
 

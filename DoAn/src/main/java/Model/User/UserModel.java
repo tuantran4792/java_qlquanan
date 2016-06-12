@@ -20,8 +20,16 @@ public class UserModel {
 	public void setPaswword(String paswword) {
 		Paswword = paswword;
 	}
+
+	public Long getUserId() {
+		return UserId;
+	}
+	public void setUserId(Long userId) {
+		UserId = userId;
+	}
 	public String Username;
 	public Long GroupId;
 	public String Paswword;
+	public Long UserId;
 }
 

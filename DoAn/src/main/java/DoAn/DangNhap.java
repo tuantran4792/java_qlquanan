@@ -88,7 +88,7 @@ public class DangNhap extends JFrame {
 				{
 					GlobalModel data = new GlobalModel();
 					data.Username = username;
-					
+					data.UserId = Integer.parseInt(user.UserId.toString());
 					DangNhap.this.setVisible(false);
 					
 					TongQuan tq = new TongQuan();
