@@ -33,8 +33,12 @@ public class TongQuan extends JFrame {
 
 	private JPanel contentPane;
 	private JTextField txtTKHangHoa, txtTKLichLV, txtTKKhachHang;
+<<<<<<< HEAD
 	private JTable tbDSHangHoa;
 
+=======
+	private JTable tbDSHangHoa, tbDSKhachHang;
+>>>>>>> ed583a61ac8ec6e10fb7155fa951c067c2c8f59b
 	ProductDAO bllProduct;
 
 	/**
@@ -130,12 +134,12 @@ public class TongQuan extends JFrame {
 			   tblModel.addRow(row);
 			}
 		
-		JScrollPane scrollPane = new JScrollPane();
-		scrollPane.setBounds(49, 50, 837, 588);
-		pHangHoa.add(scrollPane);
+		JScrollPane scrollPaneHH = new JScrollPane();
+		scrollPaneHH.setBounds(49, 50, 837, 588);
+		pHangHoa.add(scrollPaneHH);
 		
 		tbDSHangHoa = new JTable(tblModel);
-		scrollPane.setViewportView(tbDSHangHoa);
+		scrollPaneHH.setViewportView(tbDSHangHoa);
 		
 		
 		//Lich lam viec
@@ -176,31 +180,51 @@ public class TongQuan extends JFrame {
 		pKhachHang.setLayout(null);
 		pKhachHang.setVisible(false);
 		
-		JList lstKhachHang = new JList();
-		lstKhachHang.setBounds(10, 51, 896, 550);
-		pKhachHang.add(lstKhachHang);
-		
 		txtTKKhachHang = new JTextField();
 		txtTKKhachHang.setText("Nhập tên hoặc SĐT khách hàng ...");
 		txtTKKhachHang.setColumns(10);
-		txtTKKhachHang.setBounds(10, 11, 562, 20);
+		txtTKKhachHang.setBounds(10, 11, 602, 22);
 		pKhachHang.add(txtTKKhachHang);
 		
-		JComboBox cbxKHNgayBD = new JComboBox();
-		cbxKHNgayBD.setToolTipText("");
-		cbxKHNgayBD.setBounds(582, 11, 146, 20);
-		pKhachHang.add(cbxKHNgayBD);
+		JButton btnThemKhachHang = new JButton("Thêm khách hàng");
+		btnThemKhachHang.setBounds(700, 2, 140, 35);
+		pKhachHang.add(btnThemKhachHang);
+		btnThemKhachHang.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				ThemKhachHang fThemKH = new  ThemKhachHang();
+				fThemKH.setVisible(true);
+			}
+		});
 		
-		JComboBox cbxKHNgayKT = new JComboBox();
-		cbxKHNgayKT.setToolTipText("");
-		cbxKHNgayKT.setBounds(740, 11, 146, 20);
-		pKhachHang.add(cbxKHNgayKT);
+		String[] cNameKH = new String[]{"Mã",
+                "Tên khách hàng",
+                "Ngày sinh",
+                "Số điện thoại",
+                "Địa chỉ",
+                "Ngày đến gần đây nhất"};
 		
-		JButton btnTimKiem = new JButton("Tìm kiếm");
-		btnTimKiem.setBounds(900, 11, 89, 23);
-		pKhachHang.add(btnTimKiem);
+		//java.util.List<BaseProduct> guest = bllProduct.getProducts(null, 0);
+	    //DefaultTableModel tblModelKH = new DefaultTableModel(cNameKH, 0r);
+
+//		for (int i = 0; i < products.size(); i++){
+//			   long ProductId = products.get(i).getProductId();
+//			   String Barcode = products.get(i).getBarCode();
+//			   String ProductName = products.get(i).getProductName();
+//			   long CategoryId = products.get(i).getCategoryId();
+//			   BigDecimal Price = products.get(i).getRetailPrice();
+//			   BigDecimal Quantity = products.get(i).getQtyAvailable();
+//			   Object[] row = {ProductId, Barcode, ProductName, CategoryId, Price, Quantity};
+//			   tblModel.addRow(row);
+//			}
+		
+		JScrollPane scrollPaneKH = new JScrollPane();
+		scrollPaneKH.setBounds(49, 50, 837, 588);
+		pKhachHang.add(scrollPaneKH);
+		
+		tbDSKhachHang = new JTable(tblModel);
+		scrollPaneKH.setViewportView(tbDSKhachHang);
 				
-				
+		
 		JButton btnPOS = new JButton("POS");
 		btnPOS.setBounds(10, 28, 102, 33);
 		contentPane.add(btnPOS);
