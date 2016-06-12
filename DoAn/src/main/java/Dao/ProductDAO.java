@@ -1,5 +1,6 @@
 package Dao;
 
+import java.math.BigDecimal;
 import java.util.*;
 import org.hibernate.Criteria;
 import org.hibernate.HibernateException;
@@ -11,11 +12,13 @@ import org.hibernate.criterion.Restrictions;
 import POJO_entities.BaseProduct;
 import Model.Common;
 import Untils.HibernateUtil;
+import Model.GlobalModel;
 
 public class ProductDAO {
 
 	Transaction tran;
 	Common cm;
+	GlobalModel global = new GlobalModel();
     public ProductDAO() {
     	cm = new Common();
 		//h = new HibernateUtil();
@@ -93,23 +96,30 @@ public class ProductDAO {
         int ProductId = 0;
 		Session session = HibernateUtil.getSessionFactory().openSession();
 
-		if(item.getBarCode().isEmpty())
-		{
-			Long Id = (Long) session.createQuery("from Base_Product ORDER BY ProductId DESC")
-	                .setMaxResults(1)
-	                .uniqueResult();
-			if(Id < 0 )Id = Long.valueOf(1); 
-			String newBarcode = cm.setPrefix(4,Id);
-			item.setBarCode(newBarcode);
-		}
+		
 		Transaction transaction = null;
 	      try{
 	    	 transaction = session.beginTransaction();
 	    	 
 	    	 item.setCreatedUser(UserId);
 	    	 item.setCreatedDate(new Date());
-	         ProductId = (Integer) session.save(item); 
+	    	 item.setIsActived(true);
+	    	 item.setIsDeleted(false);
+	    	 BigDecimal valDouble = new BigDecimal(1);
+	    	 item.setQtyAvailable(valDouble );
+	         session.save(item); 
+	         if(item.getBarCode().isEmpty())
+	 		{
+	 			String newBarcode = cm.setPrefix(4,item.getProductId());
+	 			item.setBarCode(newBarcode);
+	 			session.update(item);
+	 		
+	 		}
+	         
 	         transaction.commit();
+	         session.flush();
+	         session.close();
+	         
 	      }catch (HibernateException e) {
 	         if (transaction!= null) transaction.rollback();
 	         e.printStackTrace(); 

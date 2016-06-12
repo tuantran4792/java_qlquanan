@@ -7,11 +7,32 @@ public class Common {
         public final String SaleOrder = "PX";
         public final String ReceiptVoucher = "PT";
         public final String DraftSaleOrder = "TX";
-        public final String DraftReceiptVoucher = "TT";
+        public final String Product = "SP00";
+        public final String Customer = "CO00";
     }
 	public String setPrefix(int type, long Id)
 	{
+		CodePrefix code = new CodePrefix();
 		String result = "";
+		switch (type) {
+		case 1:
+			result = code.SaleOrder + Long.valueOf(Id).toString();
+			break;
+		case 2:
+			result = code.ReceiptVoucher + Long.valueOf(Id).toString();
+			break;
+		case 3:
+			result = code.DraftSaleOrder + Long.valueOf(Id).toString();
+			break;
+		case 4:
+			result = code.Product + Long.valueOf(Id).toString();
+			break;
+		case 5: 
+			result = code.Customer + Long.valueOf(Id).toString();
+			break;
+		default:
+			break;
+		}
 		return result;
 	}
 }

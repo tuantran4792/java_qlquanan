@@ -80,7 +80,7 @@ public class HangHoa extends JFrame {
                 "Số lượng"};
 		
 		java.util.List<BaseProduct> products = bllProduct.getProducts(null, 0);
-	    DefaultTableModel tblModel = new DefaultTableModel(columnNames, 1);
+	    DefaultTableModel tblModel = new DefaultTableModel(columnNames, 0);
 
 		for (int i = 0; i < products.size(); i++){
 			   long ProductId = products.get(i).getProductId();

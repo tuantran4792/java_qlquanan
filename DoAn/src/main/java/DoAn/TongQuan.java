@@ -34,6 +34,7 @@ public class TongQuan extends JFrame {
 	private JPanel contentPane;
 	private JTextField txtTKHangHoa, txtTKLichLV, txtTKKhachHang;
 	private JTable tbDSHangHoa;
+
 	ProductDAO bllProduct;
 
 	/**
@@ -57,6 +58,7 @@ public class TongQuan extends JFrame {
 	 * Create the frame.
 	 */
 	public TongQuan() {
+	//	GlobalModel global = new GlobalModel();
 		bllProduct = new ProductDAO();
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(40, 35, 1200, 700);
@@ -64,9 +66,6 @@ public class TongQuan extends JFrame {
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
-		
-
-		GlobalModel data = new GlobalModel();
 		
 		
 		//Dashboard
@@ -118,7 +117,7 @@ public class TongQuan extends JFrame {
                 "Số lượng"};
 		
 		java.util.List<BaseProduct> products = bllProduct.getProducts(null, 0);
-	    DefaultTableModel tblModel = new DefaultTableModel(columnNames, 1);
+	    DefaultTableModel tblModel = new DefaultTableModel(columnNames, 0);
 
 		for (int i = 0; i < products.size(); i++){
 			   long ProductId = products.get(i).getProductId();
