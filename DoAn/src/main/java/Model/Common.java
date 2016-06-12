@@ -9,4 +9,9 @@ public class Common {
         public final String DraftSaleOrder = "TX";
         public final String DraftReceiptVoucher = "TT";
     }
+	public String setPrefix(int type, long Id)
+	{
+		String result = "";
+		return result;
+	}
 }
