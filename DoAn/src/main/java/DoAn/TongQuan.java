@@ -63,7 +63,6 @@ public class TongQuan extends JFrame {
 	 */
 	public TongQuan() {
 	//	GlobalModel global = new GlobalModel();
-		bllProduct = new ProductDAO();
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(40, 35, 1200, 700);
 		contentPane = new JPanel();
@@ -84,7 +83,6 @@ public class TongQuan extends JFrame {
 		pDBHomNay.setBorder(BorderFactory.createTitledBorder("Hôm nay"));
 		pDashboard.add(pDBHomNay);
 		
-				
 		//Hang hoa
 		final JPanel pHangHoa = new JPanel();
 		pHangHoa.setBounds(166, 11, 1008, 639);
@@ -92,6 +90,7 @@ public class TongQuan extends JFrame {
 		pHangHoa.setLayout(null);
 		pHangHoa.setVisible(false);
 		
+<<<<<<< HEAD
 		txtTKHangHoa = new JTextField();
 		txtTKHangHoa.setText("Nhập tên hàng cần tìm ...");
 		txtTKHangHoa.setBounds(49, 11, 562, 20);
@@ -143,43 +142,23 @@ public class TongQuan extends JFrame {
 		
 		
 		//Lich lam viec
+=======
+		//LichLamViec
+>>>>>>> 27f5f714d89a0ea4d9298f94c7ae90d8a405d7eb
 		final JPanel pLichLamViec = new JPanel();
 		pLichLamViec.setBounds(166, 11, 1008, 639);
 		contentPane.add(pLichLamViec);
 		pLichLamViec.setLayout(null);
-		pLichLamViec.setVisible(false);
+		pLichLamViec.setVisible(true);
 		
-		JList lstLichLamViec = new JList();
-		lstLichLamViec.setBounds(10, 51, 896, 550);
-		pLichLamViec.add(lstLichLamViec);
-		
-		txtTKLichLV = new JTextField();
-		txtTKLichLV.setText("Nhập tên nhân viên ...");
-		txtTKLichLV.setColumns(10);
-		txtTKLichLV.setBounds(10, 11, 562, 20);
-		pLichLamViec.add(txtTKLichLV);
-		
-		JComboBox cbxLLVNgayBD = new JComboBox();
-		cbxLLVNgayBD.setToolTipText("");
-		cbxLLVNgayBD.setBounds(582, 11, 146, 20);
-		pLichLamViec.add(cbxLLVNgayBD);
-		
-		JComboBox cbxLLVNgayKT = new JComboBox();
-		cbxLLVNgayKT.setToolTipText("");
-		cbxLLVNgayKT.setBounds(740, 11, 146, 20);
-		pLichLamViec.add(cbxLLVNgayKT);
-		
-		JButton btnThemLich = new JButton("Thêm Lịch");
-		btnThemLich.setBounds(900, 11, 89, 23);
-		pLichLamViec.add(btnThemLich);
-		
-		//Lich lam viec
+		//KH
 		final JPanel pKhachHang = new JPanel();
 		pKhachHang.setBounds(166, 11, 1008, 639);
 		contentPane.add(pKhachHang);
 		pKhachHang.setLayout(null);
 		pKhachHang.setVisible(false);
 		
+<<<<<<< HEAD
 		txtTKKhachHang = new JTextField();
 		txtTKKhachHang.setText("Nhập tên hoặc SĐT khách hàng ...");
 		txtTKKhachHang.setColumns(10);
@@ -225,6 +204,8 @@ public class TongQuan extends JFrame {
 		scrollPaneKH.setViewportView(tbDSKhachHang);
 				
 		
+=======
+>>>>>>> 27f5f714d89a0ea4d9298f94c7ae90d8a405d7eb
 		JButton btnPOS = new JButton("POS");
 		btnPOS.setBounds(10, 28, 102, 33);
 		contentPane.add(btnPOS);
@@ -260,9 +241,60 @@ public class TongQuan extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
 				pHangHoa.setVisible(true);
-				pDashboard.setVisible(false);
 				pLichLamViec.setVisible(false);
+				pDashboard.setVisible(false);
 				pKhachHang.setVisible(false);
+				bllProduct = new ProductDAO();
+
+				txtTKHangHoa = new JTextField();
+				txtTKHangHoa.setText("Nhập tên hàng cần tìm ...");
+				txtTKHangHoa.setBounds(49, 11, 562, 20);
+				pHangHoa.add(txtTKHangHoa);
+				txtTKHangHoa.setColumns(10);
+				
+				JComboBox cbxNhomHang = new JComboBox();
+				cbxNhomHang.setModel(new DefaultComboBoxModel(new String[] {"Nhóm hàng"}));
+				cbxNhomHang.setToolTipText("");
+				cbxNhomHang.setBounds(646, 11, 146, 20);
+				pHangHoa.add(cbxNhomHang);
+				
+				JButton btnThemHang = new JButton("Thêm Hàng");
+				btnThemHang.setBounds(800, 11, 89, 23);
+				pHangHoa.add(btnThemHang);
+				btnThemHang.addActionListener(new ActionListener() {
+					public void actionPerformed(ActionEvent e) {
+						ThemHang fThemHang = new  ThemHang();
+						fThemHang.setVisible(true);
+					}
+				});
+				
+				String[] columnNames = new String[]{"Mã",
+		                "Tên hàng hóa",
+		                "Nhóm hàng",
+		                "Giá bán",
+		                "Số lượng"};
+				
+				java.util.List<BaseProduct> products = bllProduct.getProducts(null, 0);
+			    DefaultTableModel tblModel = new DefaultTableModel(columnNames, 0);
+
+				for (int i = 0; i < products.size(); i++){
+					   long ProductId = products.get(i).getProductId();
+					   String Barcode = products.get(i).getBarCode();
+					   String ProductName = products.get(i).getProductName();
+					   long CategoryId = products.get(i).getCategoryId();
+					   BigDecimal Price = products.get(i).getRetailPrice();
+					   BigDecimal Quantity = products.get(i).getQtyAvailable();
+					   Object[] row = { Barcode, ProductName, CategoryId, Price, Quantity};
+					   tblModel.addRow(row);
+					}
+				
+				JScrollPane scrollPane = new JScrollPane();
+				scrollPane.setBounds(49, 50, 837, 588);
+				pHangHoa.add(scrollPane);
+				
+				tbDSHangHoa = new JTable(tblModel);
+				scrollPane.setViewportView(tbDSHangHoa);
+				
 			}
 		});
 		
@@ -270,9 +302,36 @@ public class TongQuan extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
 				pLichLamViec.setVisible(true);
-				pDashboard.setVisible(false);
 				pHangHoa.setVisible(false);
 				pKhachHang.setVisible(false);
+				pDashboard.setVisible(false);
+
+
+				
+				JList lstLichLamViec = new JList();
+				lstLichLamViec.setBounds(10, 51, 896, 550);
+				pLichLamViec.add(lstLichLamViec);
+				
+				txtTKLichLV = new JTextField();
+				txtTKLichLV.setText("Nhập tên nhân viên ...");
+				txtTKLichLV.setColumns(10);
+				txtTKLichLV.setBounds(10, 11, 562, 20);
+				pLichLamViec.add(txtTKLichLV);
+				
+				JComboBox cbxLLVNgayBD = new JComboBox();
+				cbxLLVNgayBD.setToolTipText("");
+				cbxLLVNgayBD.setBounds(582, 11, 146, 20);
+				pLichLamViec.add(cbxLLVNgayBD);
+				
+				JComboBox cbxLLVNgayKT = new JComboBox();
+				cbxLLVNgayKT.setToolTipText("");
+				cbxLLVNgayKT.setBounds(740, 11, 146, 20);
+				pLichLamViec.add(cbxLLVNgayKT);
+				
+				JButton btnThemLich = new JButton("Thêm Lịch");
+				btnThemLich.setBounds(900, 11, 89, 23);
+				pLichLamViec.add(btnThemLich);
+
 			}
 		});
 		
@@ -283,6 +342,31 @@ public class TongQuan extends JFrame {
 				pDashboard.setVisible(false);
 				pHangHoa.setVisible(false);
 				pLichLamViec.setVisible(false);
+				
+				JList lstKhachHang = new JList();
+				lstKhachHang.setBounds(10, 51, 896, 550);
+				pKhachHang.add(lstKhachHang);
+				
+				txtTKKhachHang = new JTextField();
+				txtTKKhachHang.setText("Nhập tên hoặc SĐT khách hàng ...");
+				txtTKKhachHang.setColumns(10);
+				txtTKKhachHang.setBounds(10, 11, 562, 20);
+				pKhachHang.add(txtTKKhachHang);
+				
+				JComboBox cbxKHNgayBD = new JComboBox();
+				cbxKHNgayBD.setToolTipText("");
+				cbxKHNgayBD.setBounds(582, 11, 146, 20);
+				pKhachHang.add(cbxKHNgayBD);
+				
+				JComboBox cbxKHNgayKT = new JComboBox();
+				cbxKHNgayKT.setToolTipText("");
+				cbxKHNgayKT.setBounds(740, 11, 146, 20);
+				pKhachHang.add(cbxKHNgayKT);
+				
+				JButton btnTimKiem = new JButton("Tìm kiếm");
+				btnTimKiem.setBounds(900, 11, 89, 23);
+				pKhachHang.add(btnTimKiem);
+
 			}
 		});
 	}
