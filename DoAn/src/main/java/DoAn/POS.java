@@ -10,6 +10,7 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
@@ -40,34 +41,35 @@ public class POS extends JFrame {
 	 */
 	public POS() {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 450, 300);
+		setBounds(10, 10, 1260, 740);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		contentPane.setLayout(new BorderLayout(0, 0));
 		setContentPane(contentPane);
 		
 		JPanel pPOS = new JPanel();
-		pPOS.setBounds(166, 11, 1008, 639);
+		pPOS.setBounds(0, 15, 1260, 700);
 		contentPane.add(pPOS);
 		pPOS.setLayout(null);
 		pPOS.setVisible(true);
 		
 		JLabel lblSoDoBan = new JLabel("Sơ  Đồ  Bàn");
 		lblSoDoBan.setFont(new Font("UTM French Vanilla", Font.PLAIN, 30));
-		lblSoDoBan.setBounds(73, 1, 157, 38);
+		lblSoDoBan.setBounds(73, 81, 157, 38);
 		pPOS.add(lblSoDoBan);
 		
 		JTextArea tarSoDoBan = new JTextArea();
-		tarSoDoBan.setBounds(10, 42, 283, 558);
+		tarSoDoBan.setBounds(10, 122, 300, 558);
+		tarSoDoBan.setEditable(false);
 		pPOS.add(tarSoDoBan);
 		
 		JLabel lblHoaDon = new JLabel("Hóa  Đơn");
 		lblHoaDon.setFont(new Font("UTM French Vanilla", Font.PLAIN, 30));
-		lblHoaDon.setBounds(408, 1, 129, 38);
+		lblHoaDon.setBounds(425, 81, 129, 38);
 		pPOS.add(lblHoaDon);
 		
 		JPanel pTTHoaDon = new JPanel();
-		pTTHoaDon.setBounds(303, 40, 343, 558);
+		pTTHoaDon.setBounds(320, 120, 343, 558);
 		pTTHoaDon.setBorder(BorderFactory.createTitledBorder("Thông tin hóa đơn"));
 		pPOS.add(pTTHoaDon);
 		pTTHoaDon.setLayout(null);
@@ -153,11 +155,12 @@ public class POS extends JFrame {
 		
 		JLabel lblThucDon = new JLabel("Thực  Đơn");
 		lblThucDon.setFont(new Font("UTM French Vanilla", Font.PLAIN, 30));
-		lblThucDon.setBounds(777, 1, 129, 38);
+		lblThucDon.setBounds(777, 81, 129, 38);
 		pPOS.add(lblThucDon);
 		
 		JTextArea tarThucDon = new JTextArea();
-		tarThucDon.setBounds(656, 42, 337, 482);
+		tarThucDon.setBounds(656, 122, 337, 482);
+		tarThucDon.setEditable(false);
 		pPOS.add(tarThucDon);
 	}
 

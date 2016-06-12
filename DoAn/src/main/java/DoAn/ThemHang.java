@@ -1,6 +1,7 @@
 package DoAn;
 
 import java.awt.BorderLayout;
+import java.awt.Dimension;
 import java.awt.EventQueue;
 
 import javax.swing.JFrame;
@@ -9,11 +10,19 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.JLabel;
 import javax.swing.JTextField;
 import javax.swing.JComboBox;
+import java.awt.Font;
+import java.awt.Toolkit;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
+import javax.swing.SwingConstants;
+import javax.swing.JButton;
+import DoAn.TongQuan;
 
 public class ThemHang extends JFrame {
 
 	private JPanel contentPane;
-	private JTextField txtTenHang;
+	private JTextField txtMaHang, txtTenHang, txtNCC, txtDonGia, txtVAT;
 
 	/**
 	 * Launch the application.
@@ -36,27 +45,91 @@ public class ThemHang extends JFrame {
 	 */
 	public ThemHang() {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(150, 30, 1000, 700);
+		Dimension dimension = Toolkit.getDefaultToolkit().getScreenSize();
+		setBounds(dimension.width / 3, dimension.height / 5, 405, 410);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 		
-		JLabel lblTnHng = new JLabel("T�n h�ng:");
-		lblTnHng.setBounds(22, 52, 58, 14);
-		contentPane.add(lblTnHng);
+		JLabel lblThemHang = new JLabel("Thêm Hàng");
+		lblThemHang.setFont(new Font("UTM Aristote", Font.PLAIN, 26));
+		lblThemHang.setBounds(101, 8, 188, 45);
+		contentPane.add(lblThemHang);
+		
+		JLabel lblMaHang = new JLabel("Mã hàng:");
+		lblMaHang.setBounds(27, 73, 85, 14);
+		contentPane.add(lblMaHang);
+		
+		txtMaHang = new JTextField();
+		txtMaHang.setHorizontalAlignment(SwingConstants.LEFT);
+		txtMaHang.setBounds(132, 69, 224, 20);
+		contentPane.add(txtMaHang);
+		txtMaHang.setColumns(10);
+		
+		JLabel lblTenHang = new JLabel("Tên hàng:");
+		lblTenHang.setBounds(27, 113, 85, 14);
+		contentPane.add(lblTenHang);
 		
 		txtTenHang = new JTextField();
-		txtTenHang.setBounds(105, 49, 86, 20);
+		txtTenHang.setBounds(132, 109, 224, 20);
 		contentPane.add(txtTenHang);
 		txtTenHang.setColumns(10);
 		
-		JLabel lblNhmHng = new JLabel("Nh�m h�ng:");
-		lblNhmHng.setBounds(22, 94, 58, 14);
-		contentPane.add(lblNhmHng);
+		JLabel lblNhomHang = new JLabel("Nhóm hàng:");
+		lblNhomHang.setBounds(28, 153, 84, 14);
+		contentPane.add(lblNhomHang);
 		
 		JComboBox cbxNhomHang = new JComboBox();
-		cbxNhomHang.setBounds(105, 91, 86, 20);
+		cbxNhomHang.setBounds(133, 149, 148, 20);
 		contentPane.add(cbxNhomHang);
+		
+		JLabel lblNhaCungCap = new JLabel("Nhà cung cấp:");
+		lblNhaCungCap.setBounds(27, 193, 85, 14);
+		contentPane.add(lblNhaCungCap);
+		
+		txtNCC = new JTextField();
+		txtNCC.setBounds(132, 189, 224, 20);
+		contentPane.add(txtNCC);
+		txtNCC.setColumns(10);
+		
+		JLabel lblDonGia = new JLabel("Đơn giá:");
+		lblDonGia.setBounds(27, 233, 85, 14);
+		contentPane.add(lblDonGia);
+		
+		txtDonGia = new JTextField();
+		txtDonGia.setBounds(132, 229, 149, 20);
+		contentPane.add(txtDonGia);
+		txtDonGia.setColumns(10);
+		
+		JComboBox cbxDVT = new JComboBox();
+		cbxDVT.setBounds(297, 226, 59, 24);
+		contentPane.add(cbxDVT);
+		
+		JLabel lblVAT = new JLabel("VAT:");
+		lblVAT.setBounds(27, 273, 85, 14);
+		contentPane.add(lblVAT);
+		
+		txtVAT = new JTextField();
+		txtVAT.setBounds(132, 269, 224, 20);
+		contentPane.add(txtVAT);
+		txtVAT.setColumns(10);
+		
+		JButton btnThem = new JButton("Thêm");
+		btnThem.setFont(new Font("Tahoma", Font.BOLD, 13));
+		btnThem.setBounds(133, 310, 100, 40);
+		contentPane.add(btnThem);
+		
+		JButton btnThoat = new JButton("Thoát");
+		btnThoat.setFont(new Font("Tahoma", Font.BOLD, 13));
+		btnThoat.setBounds(256, 310, 100, 40);
+		contentPane.add(btnThoat);
+		
+		btnThoat.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub
+				dispose();
+			}
+		});
 	}
 }
