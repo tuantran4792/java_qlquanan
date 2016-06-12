@@ -93,8 +93,8 @@ public class ProductDAO {
 	      }
 		return result;
 	}
-	public Integer addProduct(BaseProduct item, int UserId){
-        int ProductId = 0;
+	public Long addProduct(BaseProduct item, int UserId){
+        Long ProductId = Long.valueOf(0);
 		Session session = HibernateUtil.getSessionFactory().openSession();
 		Long row = (Long) session.createCriteria(BaseProduct.class).setProjection(Projections.rowCount()).uniqueResult();
 		if(item.getBarCode().isEmpty())
@@ -114,7 +114,7 @@ public class ProductDAO {
 	    	 item.setQtyAvailable(valDouble );
 	         session.save(item);
 	         transaction.commit();
-	         
+	         ProductId = item.getProductId();
 	      }catch (HibernateException e) {
 	         if (transaction!= null) transaction.rollback();
 	         e.printStackTrace(); 

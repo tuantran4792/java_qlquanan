@@ -23,12 +23,14 @@ import DoAn.TongQuan;
 import Model.GlobalModel;
 import Dao.ProductDAO;
 import POJO_entities.BaseProduct;
+
+
 public class ThemHang extends JFrame {
 
 	private JPanel contentPane;
 	private JTextField txtMaHang, txtTenHang, txtNCC, txtDonGia, txtVAT;
-	ProductDAO model;
-	GlobalModel global = new GlobalModel();
+	ProductDAO model  = new ProductDAO();;
+	GlobalModel global;
 	/**
 	 * Launch the application.
 	 */
@@ -49,7 +51,7 @@ public class ThemHang extends JFrame {
 	 * Create the frame.
 	 */
 	public ThemHang() {
-		model = new ProductDAO();
+		global = new GlobalModel();
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		Dimension dimension = Toolkit.getDefaultToolkit().getScreenSize();
 		setBounds(dimension.width / 3, dimension.height / 5, 405, 410);
@@ -131,10 +133,10 @@ public class ThemHang extends JFrame {
 				item.setRetailPrice(new BigDecimal( txtDonGia.getText()));
 				item.setCategoryId(Long.valueOf(1));
 			
-			int ProductId =  model.addProduct(item, 0);
-			if(ProductId > 0)
+			Long ProductId =  model.addProduct(item, 0);
+				if(ProductId > 0)
 				{
-				dispose();
+					dispose();
 				}
 			}
 		});

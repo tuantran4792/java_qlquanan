@@ -7,6 +7,7 @@ import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.math.BigDecimal;
+import java.util.function.Function;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -29,7 +30,7 @@ import javax.swing.JComboBox;
 import javax.swing.BorderFactory;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
-public class TongQuan extends JFrame {
+public class TongQuan extends JFrame{
 
 	private JPanel contentPane;
 	private JTextField txtTKHangHoa, txtTKLichLV, txtTKKhachHang;
@@ -130,6 +131,59 @@ public class TongQuan extends JFrame {
 				pKhachHang.setVisible(false);
 			}
 		});
+		txtTKHangHoa = new JTextField();
+		txtTKHangHoa.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				bllProduct = new ProductDAO();	
+				
+				String[] columnNames = new String[]{"Mã",
+		                "Tên hàng hóa",
+		                "Nhóm hàng",
+		                "Giá bán",
+		                "Số lượng"};
+				
+				java.util.List<BaseProduct> products = bllProduct.getProducts(txtTKHangHoa.getText(), 0);
+			    DefaultTableModel tblModel = new DefaultTableModel(columnNames, 0);
+
+				for (int i = 0; i < products.size(); i++){
+					   long ProductId = products.get(i).getProductId();
+					   String Barcode = products.get(i).getBarCode();
+					   String ProductName = products.get(i).getProductName();
+					   long CategoryId = products.get(i).getCategoryId();
+					   BigDecimal Price = products.get(i).getRetailPrice();
+					   BigDecimal Quantity = products.get(i).getQtyAvailable();
+					   Object[] row = { Barcode, ProductName, CategoryId, Price, Quantity};
+					   tblModel.addRow(row);
+					}		
+				tbDSHangHoa.setModel(tblModel);
+				tbDSHangHoa.repaint();
+			}
+		});
+		txtTKHangHoa.setText("Nhập tên hàng cần tìm ...");
+		txtTKHangHoa.setBounds(49, 11, 562, 20);
+		pHangHoa.add(txtTKHangHoa);
+		txtTKHangHoa.setColumns(10);
+		
+		JComboBox cbxNhomHang = new JComboBox();
+		cbxNhomHang.setModel(new DefaultComboBoxModel(new String[] {"Nhóm hàng"}));
+		cbxNhomHang.setToolTipText("");
+		cbxNhomHang.setBounds(646, 11, 146, 20);
+		pHangHoa.add(cbxNhomHang);
+		
+		JButton btnThemHang = new JButton("Thêm Hàng");
+		btnThemHang.setBounds(800, 11, 89, 23);
+		pHangHoa.add(btnThemHang);
+		btnThemHang.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				ThemHang fThemHang = new  ThemHang();
+				fThemHang.setVisible(true);
+			}
+		});
+		JScrollPane scrollPane = new JScrollPane();
+		scrollPane.setBounds(49, 50, 837, 588);
+		pHangHoa.add(scrollPane);
+		tbDSHangHoa = new JTable();
+		scrollPane.setViewportView(tbDSHangHoa);
 		
 		btnHangHoa.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -138,29 +192,8 @@ public class TongQuan extends JFrame {
 				pLichLamViec.setVisible(false);
 				pDashboard.setVisible(false);
 				pKhachHang.setVisible(false);
-				bllProduct = new ProductDAO();
-
-				txtTKHangHoa = new JTextField();
-				txtTKHangHoa.setText("Nhập tên hàng cần tìm ...");
-				txtTKHangHoa.setBounds(49, 11, 562, 20);
-				pHangHoa.add(txtTKHangHoa);
-				txtTKHangHoa.setColumns(10);
 				
-				JComboBox cbxNhomHang = new JComboBox();
-				cbxNhomHang.setModel(new DefaultComboBoxModel(new String[] {"Nhóm hàng"}));
-				cbxNhomHang.setToolTipText("");
-				cbxNhomHang.setBounds(646, 11, 146, 20);
-				pHangHoa.add(cbxNhomHang);
-				
-				JButton btnThemHang = new JButton("Thêm Hàng");
-				btnThemHang.setBounds(800, 11, 89, 23);
-				pHangHoa.add(btnThemHang);
-				btnThemHang.addActionListener(new ActionListener() {
-					public void actionPerformed(ActionEvent e) {
-						ThemHang fThemHang = new  ThemHang();
-						fThemHang.setVisible(true);
-					}
-				});
+				bllProduct = new ProductDAO();	
 				
 				String[] columnNames = new String[]{"Mã",
 		                "Tên hàng hóa",
@@ -180,15 +213,9 @@ public class TongQuan extends JFrame {
 					   BigDecimal Quantity = products.get(i).getQtyAvailable();
 					   Object[] row = { Barcode, ProductName, CategoryId, Price, Quantity};
 					   tblModel.addRow(row);
-					}
-				
-				JScrollPane scrollPane = new JScrollPane();
-				scrollPane.setBounds(49, 50, 837, 588);
-				pHangHoa.add(scrollPane);
-				
-				tbDSHangHoa = new JTable(tblModel);
-				scrollPane.setViewportView(tbDSHangHoa);
-				
+					}		
+				tbDSHangHoa.setModel(tblModel);
+				tbDSHangHoa.repaint();
 			}
 		});
 		
