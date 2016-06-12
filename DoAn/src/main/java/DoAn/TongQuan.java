@@ -201,7 +201,6 @@ public class TongQuan extends JFrame {
 		btnTimKiem.setBounds(900, 11, 89, 23);
 		pKhachHang.add(btnTimKiem);
 				
-				
 		JButton btnPOS = new JButton("POS");
 		btnPOS.setBounds(10, 28, 102, 33);
 		contentPane.add(btnPOS);
