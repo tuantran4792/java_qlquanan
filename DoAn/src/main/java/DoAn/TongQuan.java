@@ -2,8 +2,10 @@ package DoAn;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.EventQueue;
 import java.awt.Font;
+import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.math.BigDecimal;
@@ -25,16 +27,19 @@ import POJO_entities.BaseProduct;
 
 import javax.swing.JList;
 import javax.swing.JTextField;
+import javax.swing.SwingConstants;
 import javax.swing.JComboBox;
 import javax.swing.BorderFactory;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
 public class TongQuan extends JFrame {
 
-	private JPanel contentPane;
+	private JPanel contentPane, contentTH, contentTKH;
 	private JTextField txtTKHangHoa, txtTKLichLV, txtTKKhachHang;
+	private JTextField txtMaHang, txtTenHang, txtNCC, txtDonGia, txtVAT;
+	private JTextField txtMaKH, txtTenKH, txtSDT, txtDiaChi;
 	private JTable tbDSHangHoa, tbDSKhachHang;
-	ProductDAO bllProduct;
+	ProductDAO bllProduct, model;
 
 	/**
 	 * Launch the application.
@@ -207,10 +212,115 @@ public class TongQuan extends JFrame {
 				JButton btnThemHang = new JButton("Thêm Hàng");
 				btnThemHang.setBounds(800, 11, 89, 23);
 				pHangHoa.add(btnThemHang);
+				
 				btnThemHang.addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent e) {
-						ThemHang fThemHang = new  ThemHang();
+						JFrame fThemHang = new  JFrame();
 						fThemHang.setVisible(true);
+						model = new ProductDAO();
+						fThemHang.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+						Dimension dimension = Toolkit.getDefaultToolkit().getScreenSize();
+						fThemHang.setBounds(dimension.width / 3, dimension.height / 5, 405, 410);
+						contentTH = new JPanel();
+						contentTH.setBorder(new EmptyBorder(5, 5, 5, 5));
+						fThemHang.setContentPane(contentTH);
+						contentTH.setLayout(null);
+						
+						JLabel lblThemHang = new JLabel("Thêm Hàng");
+						lblThemHang.setFont(new Font("UTM Aristote", Font.PLAIN, 26));
+						lblThemHang.setBounds(101, 8, 188, 45);
+						contentTH.add(lblThemHang);
+						
+						JLabel lblMaHang = new JLabel("Mã hàng:");
+						lblMaHang.setBounds(27, 73, 85, 14);
+						contentTH.add(lblMaHang);
+						
+						txtMaHang = new JTextField();
+						txtMaHang.setToolTipText("Nhập mã hàng");
+						txtMaHang.setHorizontalAlignment(SwingConstants.LEFT);
+						txtMaHang.setBounds(132, 69, 224, 20);
+						contentTH.add(txtMaHang);
+						txtMaHang.setColumns(10);
+						
+						JLabel lblTenHang = new JLabel("Tên hàng:");
+						lblTenHang.setBounds(27, 113, 85, 14);
+						contentTH.add(lblTenHang);
+						
+						txtTenHang = new JTextField();
+						txtTenHang.setBounds(132, 109, 224, 20);
+						contentTH.add(txtTenHang);
+						txtTenHang.setColumns(10);
+						
+						JLabel lblNhomHang = new JLabel("Nhóm hàng:");
+						lblNhomHang.setBounds(28, 153, 84, 14);
+						contentPane.add(lblNhomHang);
+						
+						JComboBox cbxNhomHang = new JComboBox();
+						cbxNhomHang.setBounds(133, 149, 148, 20);
+						contentTH.add(cbxNhomHang);
+						
+						JLabel lblNhaCungCap = new JLabel("Nhà cung cấp:");
+						lblNhaCungCap.setBounds(27, 193, 85, 14);
+						contentTH.add(lblNhaCungCap);
+						
+						txtNCC = new JTextField();
+						txtNCC.setBounds(132, 189, 224, 20);
+						contentTH.add(txtNCC);
+						txtNCC.setColumns(10);
+						
+						JLabel lblDonGia = new JLabel("Đơn giá:");
+						lblDonGia.setBounds(27, 233, 85, 14);
+						contentTH.add(lblDonGia);
+						
+						txtDonGia = new JTextField();
+						txtDonGia.setBounds(132, 229, 149, 20);
+						contentTH.add(txtDonGia);
+						txtDonGia.setColumns(10);
+						
+						JComboBox cbxDVT = new JComboBox();
+						cbxDVT.setBounds(297, 226, 59, 24);
+						contentTH.add(cbxDVT);
+						
+						JLabel lblVAT = new JLabel("VAT:");
+						lblVAT.setBounds(27, 273, 85, 14);
+						contentTH.add(lblVAT);
+						
+						txtVAT = new JTextField();
+						txtVAT.setBounds(132, 269, 224, 20);
+						contentTH.add(txtVAT);
+						txtVAT.setColumns(10);
+						
+						JButton btnThemHH = new JButton("Thêm");
+						btnThemHH.addActionListener(new ActionListener() {
+							public void actionPerformed(ActionEvent e) {
+								BaseProduct item = new BaseProduct();
+								item.setBarCode(txtMaHang.getText());
+								item.setProductName(txtTenHang.getText());
+								item.setRetailPrice(new BigDecimal( txtDonGia.getText()));
+								item.setCategoryId(Long.valueOf(1));
+							
+							int ProductId =  model.addProduct(item, 0);
+							if(ProductId > 0)
+								{
+								dispose();
+								}
+							}
+						});
+						btnThemHH.setFont(new Font("Tahoma", Font.BOLD, 13));
+						btnThemHH.setBounds(133, 310, 100, 40);
+						contentTH.add(btnThemHH);
+						
+						JButton btnThoatHH = new JButton("Thoát");
+						btnThoatHH.setFont(new Font("Tahoma", Font.BOLD, 13));
+						btnThoatHH.setBounds(256, 310, 100, 40);
+						contentTH.add(btnThoatHH);
+						
+						btnThoatHH.addActionListener(new ActionListener() {
+							public void actionPerformed(ActionEvent e) {
+								// TODO Auto-generated method stub
+								dispose();
+							}
+						});
 					}
 				});
 				
@@ -296,10 +406,89 @@ public class TongQuan extends JFrame {
 				JButton btnThemKhachHang = new JButton("Thêm khách hàng");
 				btnThemKhachHang.setBounds(700, 2, 140, 35);
 				pKhachHang.add(btnThemKhachHang);
+				
 				btnThemKhachHang.addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent e) {
-						ThemKhachHang fThemKH = new  ThemKhachHang();
+						JFrame fThemKH = new  JFrame();
 						fThemKH.setVisible(true);
+						fThemKH.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+						Dimension dimension = Toolkit.getDefaultToolkit().getScreenSize();
+						fThemKH.setBounds(dimension.width / 3, dimension.height / 5, 430, 410);
+						contentTKH = new JPanel();
+						contentTKH.setBorder(new EmptyBorder(5, 5, 5, 5));
+						fThemKH.setContentPane(contentTKH);
+						contentTKH.setLayout(null);
+						
+						JLabel lblThemKH = new JLabel("Thêm Khách Hàng");
+						lblThemKH.setFont(new Font("UTM Aristote", Font.PLAIN, 26));
+						lblThemKH.setBounds(65, 0, 307, 62);
+						contentTKH.add(lblThemKH);
+						
+						JLabel lblMaKH = new JLabel("Mã khách hàng:");
+						lblMaKH.setBounds(27, 73, 85, 14);
+						contentTKH.add(lblMaKH);
+						
+						txtMaKH = new JTextField();
+						txtMaKH.setHorizontalAlignment(SwingConstants.LEFT);
+						txtMaKH.setBounds(163, 69, 224, 20);
+						contentTKH.add(txtMaKH);
+						txtMaKH.setColumns(10);
+						
+						JLabel lblTenKH = new JLabel("Tên khách hàng:");
+						lblTenKH.setBounds(27, 113, 85, 14);
+						contentTKH.add(lblTenKH);
+						
+						txtTenKH = new JTextField();
+						txtTenKH.setBounds(163, 109, 224, 20);
+						contentTKH.add(txtTenKH);
+						txtTenKH.setColumns(10);
+						
+						JLabel lblNgaySinh = new JLabel("Ngày sinh:");
+						lblNgaySinh.setBounds(28, 153, 84, 14);
+						contentTKH.add(lblNgaySinh);
+
+						JComboBox cbxNhomHang = new JComboBox();
+						cbxNhomHang.setBounds(164, 149, 148, 20);
+						contentTKH.add(cbxNhomHang);
+						
+						JLabel lblSDT = new JLabel("Số điện thoại:");
+						lblSDT.setBounds(27, 193, 85, 14);
+						contentTKH.add(lblSDT);
+						
+						txtSDT = new JTextField();
+						txtSDT.setBounds(163, 189, 224, 20);
+						contentTKH.add(txtSDT);
+						txtSDT.setColumns(10);
+						
+						JLabel lblDiaChi = new JLabel("Địa chỉ:");
+						lblDiaChi.setBounds(27, 233, 85, 14);
+						contentTKH.add(lblDiaChi);
+						
+						txtDiaChi = new JTextField();
+						txtDiaChi.setBounds(163, 229, 224, 20);
+						contentTKH.add(txtDiaChi);
+						txtDiaChi.setColumns(10);
+						
+						JLabel lblNDGDN = new JLabel("Ngày đến gần đây nhất:");
+						lblNDGDN.setBounds(27, 273, 135, 14);
+						contentTKH.add(lblNDGDN);
+						
+						JButton btnThemKH = new JButton("Thêm");
+						btnThemKH.setFont(new Font("Tahoma", Font.BOLD, 13));
+						btnThemKH.setBounds(164, 309, 100, 40);
+						contentTKH.add(btnThemKH);
+						
+						JButton btnThoatKH = new JButton("Thoát");
+						btnThoatKH.setFont(new Font("Tahoma", Font.BOLD, 13));
+						btnThoatKH.setBounds(287, 309, 100, 40);
+						contentTKH.add(btnThoatKH);
+						
+						btnThoatKH.addActionListener(new ActionListener() {
+							public void actionPerformed(ActionEvent e) {
+								// TODO Auto-generated method stub
+								dispose();
+							}
+						});
 					}
 				});
 				
