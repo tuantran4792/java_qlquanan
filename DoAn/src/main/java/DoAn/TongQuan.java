@@ -30,15 +30,32 @@ import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 import javax.swing.JComboBox;
 import javax.swing.BorderFactory;
+import javax.swing.ButtonGroup;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
+import javax.swing.JRadioButton;
 public class TongQuan extends JFrame {
 
 	private JPanel contentPane, contentTH, contentTKH;
-	private JTextField txtTKHangHoa, txtTKLichLV, txtTKKhachHang;
+	private JTextField txtTKHangHoa, txtTKLichLV, txtTKKhachHang, txtTKLich;
 	private JTextField txtMaHang, txtTenHang, txtNCC, txtDonGia, txtVAT;
 	private JTextField txtMaKH, txtTenKH, txtSDT, txtDiaChi;
 	private JTable tbDSHangHoa, tbDSKhachHang;
+	private String[] headers = new String[] {
+            "ID",
+            "Code",
+            "Tên khách hàng",
+            "Điện thoại",
+            "Địa chỉ",
+            "Ngày sinh",
+            "Email",
+            "Xóa",
+            "Ngày tạo",
+            "Người tạo",
+            "Ngày cập nhật",
+            "Người cập nhật",
+            "Ngày xóa",
+            "Người xóa"};
 	ProductDAO bllProduct, model;
 
 	/**
@@ -72,17 +89,82 @@ public class TongQuan extends JFrame {
 		contentPane.setLayout(null);
 		
 		
+		//POS
+		JButton btnPOS = new JButton("POS");
+		btnPOS.setBounds(10, 28, 102, 33);
+		contentPane.add(btnPOS);
+		
+		
 		//Dashboard
 		final JPanel pDashboard = new JPanel();
 		pDashboard.setBounds(166, 11, 1008, 639);
 		contentPane.add(pDashboard);
 		pDashboard.setLayout(null);
-		pDashboard.setVisible(true);
 		
 		JPanel pDBHomNay = new JPanel();
 		pDBHomNay.setBounds(10, 15, 990, 200);
 		pDBHomNay.setBorder(BorderFactory.createTitledBorder("Hôm nay"));
 		pDashboard.add(pDBHomNay);
+		pDBHomNay.setLayout(null);
+		
+		JLabel lblDoanhThu = new JLabel("Doanh thu: ");
+		lblDoanhThu.setFont(new Font("Tahoma", Font.PLAIN, 12));
+		lblDoanhThu.setBounds(59, 86, 79, 21);
+		pDBHomNay.add(lblDoanhThu);
+		
+		JLabel lblTongDT = new JLabel("10.000.000");
+		lblTongDT.setFont(new Font("Tahoma", Font.BOLD, 14));
+		lblTongDT.setBounds(148, 86, 86, 18);
+		pDBHomNay.add(lblTongDT);
+		
+		JLabel lblSoDonHang = new JLabel("Số đơn hàng: ");
+		lblSoDonHang.setFont(new Font("Tahoma", Font.PLAIN, 12));
+		lblSoDonHang.setBounds(361, 86, 79, 21);
+		pDBHomNay.add(lblSoDonHang);
+		
+		JLabel lblTongSDH = new JLabel("10");
+		lblTongSDH.setFont(new Font("Tahoma", Font.BOLD, 14));
+		lblTongSDH.setBounds(450, 86, 86, 18);
+		pDBHomNay.add(lblTongSDH);
+		
+		JLabel lblSoBanDCK = new JLabel("Số bàn đang có khách: ");
+		lblSoBanDCK.setFont(new Font("Tahoma", Font.PLAIN, 12));
+		lblSoBanDCK.setBounds(634, 86, 153, 21);
+		pDBHomNay.add(lblSoBanDCK);
+		
+		JLabel lblTongSBDCK = new JLabel("5");
+		lblTongSBDCK.setFont(new Font("Tahoma", Font.BOLD, 14));
+		lblTongSBDCK.setBounds(797, 86, 86, 18);
+		pDBHomNay.add(lblTongSBDCK);
+		
+		JPanel pDBXemTheo = new JPanel();
+		pDBXemTheo.setBounds(10, 230, 990, 400);
+		pDBXemTheo.setBorder(BorderFactory.createTitledBorder("Xem theo"));
+		pDashboard.add(pDBXemTheo);
+		pDBXemTheo.setLayout(null);
+		
+		JRadioButton rbnXTTuan = new JRadioButton("Tuần");
+		rbnXTTuan.setBounds(16, 25, 70, 23);
+		pDBXemTheo.add(rbnXTTuan);
+		rbnXTTuan.setSelected(true);
+		
+		JRadioButton rbnXTThang = new JRadioButton("Tháng");
+		rbnXTThang.setBounds(100, 25, 70, 23);
+		pDBXemTheo.add(rbnXTThang);
+		
+		JRadioButton rbnXTQuy = new JRadioButton("Quý");
+		rbnXTQuy.setBounds(187, 25, 70, 23);
+		pDBXemTheo.add(rbnXTQuy);
+		
+		ButtonGroup group = new ButtonGroup();
+		group.add(rbnXTTuan);
+		group.add(rbnXTThang);
+		group.add(rbnXTQuy);
+		
+		JButton btnDashboard = new JButton("Dashboard");
+		btnDashboard.setBounds(10, 70, 102, 34);
+		contentPane.add(btnDashboard);
+		
 		
 		//Hang hoa
 		final JPanel pHangHoa = new JPanel();
@@ -140,13 +222,22 @@ public class TongQuan extends JFrame {
 		tbDSHangHoa = new JTable(tblModel);
 		scrollPaneHH.setViewportView(tbDSHangHoa);
 		
+		JButton btnHangHoa = new JButton("Hàng hóa");
+		btnHangHoa.setBounds(10, 115, 102, 33);
+		contentPane.add(btnHangHoa);
+		
 		
 		//Lich lam viec
 		final JPanel pLichLamViec = new JPanel();
 		pLichLamViec.setBounds(166, 11, 1008, 639);
 		contentPane.add(pLichLamViec);
 		pLichLamViec.setLayout(null);
-		pLichLamViec.setVisible(true);
+		pLichLamViec.setVisible(false);
+		
+		JButton btnLichLamViec = new JButton("Lịch làm việc");
+		btnLichLamViec.setBounds(10, 159, 102, 33);
+		contentPane.add(btnLichLamViec);
+		
 		
 		//KH
 		final JPanel pKhachHang = new JPanel();
@@ -154,28 +245,25 @@ public class TongQuan extends JFrame {
 		contentPane.add(pKhachHang);
 		pKhachHang.setLayout(null);
 		pKhachHang.setVisible(false);
-		
-				
-		
-		JButton btnPOS = new JButton("POS");
-		btnPOS.setBounds(10, 28, 102, 33);
-		contentPane.add(btnPOS);
-		
-		JButton btnDashboard = new JButton("Dashboard");
-		btnDashboard.setBounds(10, 70, 102, 34);
-		contentPane.add(btnDashboard);
-		
-		JButton btnHangHoa = new JButton("Hàng hóa");
-		btnHangHoa.setBounds(10, 115, 102, 33);
-		contentPane.add(btnHangHoa);
-		
-		JButton btnLichLamViec = new JButton("Lịch làm việc");
-		btnLichLamViec.setBounds(10, 159, 102, 33);
-		contentPane.add(btnLichLamViec);
-		
+	
 		JButton btnKhachHang = new JButton("Khách hàng");
 		btnKhachHang.setBounds(10, 203, 102, 33);
 		contentPane.add(btnKhachHang);
+		
+		
+		//DoanhThu
+		final JPanel pDoanhThu = new JPanel();
+		pDoanhThu.setBounds(166, 11, 1008, 639);
+		contentPane.add(pDoanhThu);
+		pDoanhThu.setLayout(null);
+		pDoanhThu.setVisible(false);
+	
+		JButton btnDoanhThu = new JButton("Doanh thu");
+		btnDoanhThu.setBounds(10, 247, 102, 33);
+		contentPane.add(btnDoanhThu);
+				
+				
+		
 		
 		
 		btnDashboard.addActionListener(new ActionListener() {
@@ -185,6 +273,7 @@ public class TongQuan extends JFrame {
 				pHangHoa.setVisible(false);
 				pLichLamViec.setVisible(false);
 				pKhachHang.setVisible(false);
+				pDoanhThu.setVisible(false);
 			}
 		});
 		
@@ -195,6 +284,7 @@ public class TongQuan extends JFrame {
 				pLichLamViec.setVisible(false);
 				pDashboard.setVisible(false);
 				pKhachHang.setVisible(false);
+				pDoanhThu.setVisible(false);
 				bllProduct = new ProductDAO();
 
 				txtTKHangHoa = new JTextField();
@@ -361,6 +451,7 @@ public class TongQuan extends JFrame {
 				pHangHoa.setVisible(false);
 				pKhachHang.setVisible(false);
 				pDashboard.setVisible(false);
+				pDoanhThu.setVisible(false);
 				
 				JList lstLichLamViec = new JList();
 				lstLichLamViec.setBounds(10, 51, 896, 550);
@@ -396,6 +487,7 @@ public class TongQuan extends JFrame {
 				pDashboard.setVisible(false);
 				pHangHoa.setVisible(false);
 				pLichLamViec.setVisible(false);
+				pDoanhThu.setVisible(false);
 				
 				txtTKKhachHang = new JTextField();
 				txtTKKhachHang.setText("Nhập tên hoặc SĐT khách hàng ...");
@@ -519,6 +611,83 @@ public class TongQuan extends JFrame {
 				
 				tbDSKhachHang = new JTable(tblModelKH);
 				scrollPaneKH.setViewportView(tbDSKhachHang);
+			}
+		});
+		
+		btnDoanhThu.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub
+				pDoanhThu.setVisible(true);
+				pDashboard.setVisible(false);
+				pHangHoa.setVisible(false);
+				pLichLamViec.setVisible(false);
+				pKhachHang.setVisible(false);
+		
+				JRadioButton rbnTNguoiBan = new JRadioButton("Theo người bán");
+				rbnTNguoiBan.setBounds(10, 10, 120, 23);
+				pDoanhThu.add(rbnTNguoiBan);
+				rbnTNguoiBan.setSelected(true);
+				
+				JRadioButton rbnTCuaHang = new JRadioButton("Theo cửa hàng");
+				rbnTCuaHang.setBounds(150, 10, 120, 23);
+				pDoanhThu.add(rbnTCuaHang);
+				
+				ButtonGroup group = new ButtonGroup();
+				group.add(rbnTNguoiBan);
+				group.add(rbnTCuaHang);
+				
+				//TheoNguoiBan
+				final JPanel pTNguoiBan = new JPanel();
+				pTNguoiBan.setBounds(10, 60, 1000, 600);
+				pDoanhThu.add(pTNguoiBan);
+				pTNguoiBan.setLayout(null);
+				pTNguoiBan.setVisible(true);
+				
+				JComboBox cbxTuNgay = new JComboBox();
+				cbxTuNgay.setModel(new DefaultComboBoxModel(new String[] {"Từ ngày"}));
+				cbxTuNgay.setToolTipText("");
+				cbxTuNgay.setBounds(10, 10, 146, 20);
+				pTNguoiBan.add(cbxTuNgay);
+				
+				JComboBox cbxDenNgay = new JComboBox();
+				cbxDenNgay.setModel(new DefaultComboBoxModel(new String[] {"Đến ngày"}));
+				cbxDenNgay.setToolTipText("");
+				cbxDenNgay.setBounds(170, 10, 146, 20);
+				pTNguoiBan.add(cbxDenNgay);
+				
+				JButton btnTTuan = new JButton("Tuần");
+				btnTTuan.setBounds(330, 6, 80, 30);
+				pTNguoiBan.add(btnTTuan);
+				
+				JButton btnTThang = new JButton("Tháng");
+				btnTThang.setBounds(430, 6, 80, 30);
+				pTNguoiBan.add(btnTThang);
+				
+				JButton btnTQuy = new JButton("Quý");
+				btnTQuy.setBounds(525, 6, 80, 30);
+				pTNguoiBan.add(btnTQuy);
+				
+				//TheoCuaHang
+				final JPanel pTCuaHang = new JPanel();
+				pTCuaHang.setBounds(10, 60, 1000, 600);
+				pDoanhThu.add(pTCuaHang);
+				pTCuaHang.setLayout(null);
+				pTCuaHang.setVisible(false);
+				
+				
+				rbnTNguoiBan.addActionListener(new ActionListener() {
+					public void actionPerformed(ActionEvent e) {
+						pTNguoiBan.setVisible(true);
+						pTCuaHang.setVisible(false);
+					}
+				});
+				
+				rbnTCuaHang.addActionListener(new ActionListener() {
+					public void actionPerformed(ActionEvent e) {
+						pTNguoiBan.setVisible(false);
+						pTCuaHang.setVisible(true);
+					}
+				});
 			}
 		});
 	}
