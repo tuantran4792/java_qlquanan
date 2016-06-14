@@ -8,13 +8,27 @@ import java.awt.Font;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.math.BigDecimal;
+import java.sql.Date;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.List;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableModel;
 
+import org.hibernate.type.CustomCollectionType;
+import org.jdesktop.swingx.JXDatePicker;
+
+import Dao.CustomerDAO;
 import Dao.ProductDAO;
 
 import javax.swing.JScrollBar;
@@ -22,11 +36,16 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextArea;
 import javax.swing.JLabel;
+
+import Model.CommonTableModel;
 import Model.GlobalModel;
 import POJO_entities.BaseProduct;
+import POJO_entities.CusCustomers;
 
 import javax.swing.JList;
+import javax.swing.JOptionPane;
 import javax.swing.JTextField;
+import javax.swing.ScrollPaneConstants;
 import javax.swing.SwingConstants;
 import javax.swing.JComboBox;
 import javax.swing.BorderFactory;
@@ -36,12 +55,14 @@ import javax.swing.JButton;
 import javax.swing.JRadioButton;
 public class TongQuan extends JFrame {
 
-	private JPanel contentPane, contentTH, contentTKH;
+	private JPanel contentPane, contentTH, contentTKH, contentNB;
 	private JTextField txtTKHangHoa, txtTKLichLV, txtTKKhachHang, txtTKLich;
 	private JTextField txtMaHang, txtTenHang, txtNCC, txtDonGia, txtVAT;
-	private JTextField txtMaKH, txtTenKH, txtSDT, txtDiaChi;
+	private JTextField txtMaKH, txtTenKH, txtSDT, txtDiaChi, txtEmail;
+	private JXDatePicker dtNgaySinh;
 	private JTable tbDSHangHoa, tbDSKhachHang;
-	private String[] headers = new String[] {
+	private static JFrame fThemHang, fThemKH;
+	/*private String[] headers = new String[] {
             "ID",
             "Code",
             "Tên khách hàng",
@@ -55,7 +76,13 @@ public class TongQuan extends JFrame {
             "Ngày cập nhật",
             "Người cập nhật",
             "Ngày xóa",
-            "Người xóa"};
+            "Người xóa"};*/
+	String[] cNameKH = new String[]{"Mã",
+            "Tên khách hàng",
+            "Ngày sinh",
+            "Số điện thoại",
+            "Địa chỉ",
+            "Email"};
 	ProductDAO bllProduct, model;
 
 	/**
@@ -65,7 +92,6 @@ public class TongQuan extends JFrame {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					
 					TongQuan frame = new TongQuan();
 					frame.setVisible(true);
 				} catch (Exception e) {
@@ -251,6 +277,18 @@ public class TongQuan extends JFrame {
 		contentPane.add(btnKhachHang);
 		
 		
+		//NhaBep
+		final JPanel pNhaBep = new JPanel();
+		pNhaBep.setBounds(166, 11, 1008, 639);
+		contentPane.add(pNhaBep);
+		pNhaBep.setLayout(null);
+		pNhaBep.setVisible(false);
+	
+		JButton btnNhaBep = new JButton("Nhà bếp");
+		btnNhaBep.setBounds(10, 247, 102, 33);
+		contentPane.add(btnNhaBep);
+				
+				
 		//DoanhThu
 		final JPanel pDoanhThu = new JPanel();
 		pDoanhThu.setBounds(166, 11, 1008, 639);
@@ -259,13 +297,13 @@ public class TongQuan extends JFrame {
 		pDoanhThu.setVisible(false);
 	
 		JButton btnDoanhThu = new JButton("Doanh thu");
-		btnDoanhThu.setBounds(10, 247, 102, 33);
+		btnDoanhThu.setBounds(10, 291, 102, 33);
 		contentPane.add(btnDoanhThu);
 				
 				
 		
 		
-		
+		//Button Dashboard
 		btnDashboard.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
@@ -274,9 +312,11 @@ public class TongQuan extends JFrame {
 				pLichLamViec.setVisible(false);
 				pKhachHang.setVisible(false);
 				pDoanhThu.setVisible(false);
+				pNhaBep.setVisible(false);
 			}
 		});
 		
+		//Button HangHoa
 		btnHangHoa.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
@@ -285,6 +325,7 @@ public class TongQuan extends JFrame {
 				pDashboard.setVisible(false);
 				pKhachHang.setVisible(false);
 				pDoanhThu.setVisible(false);
+				pNhaBep.setVisible(false);
 				bllProduct = new ProductDAO();
 
 				txtTKHangHoa = new JTextField();
@@ -303,9 +344,10 @@ public class TongQuan extends JFrame {
 				btnThemHang.setBounds(800, 11, 89, 23);
 				pHangHoa.add(btnThemHang);
 				
+				//Frame ThemHangHoa
 				btnThemHang.addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent e) {
-						JFrame fThemHang = new  JFrame();
+						fThemHang = new JFrame();
 						fThemHang.setVisible(true);
 						model = new ProductDAO();
 						fThemHang.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -408,7 +450,7 @@ public class TongQuan extends JFrame {
 						btnThoatHH.addActionListener(new ActionListener() {
 							public void actionPerformed(ActionEvent e) {
 								// TODO Auto-generated method stub
-								dispose();
+								fThemHang.dispose();
 							}
 						});
 					}
@@ -444,6 +486,7 @@ public class TongQuan extends JFrame {
 			}
 		});
 		
+		//Button LichLamViec
 		btnLichLamViec.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
@@ -452,6 +495,7 @@ public class TongQuan extends JFrame {
 				pKhachHang.setVisible(false);
 				pDashboard.setVisible(false);
 				pDoanhThu.setVisible(false);
+				pNhaBep.setVisible(false);
 				
 				JList lstLichLamViec = new JList();
 				lstLichLamViec.setBounds(10, 51, 896, 550);
@@ -480,6 +524,7 @@ public class TongQuan extends JFrame {
 			}
 		});
 		
+		//Button KhachHang
 		btnKhachHang.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
@@ -488,6 +533,7 @@ public class TongQuan extends JFrame {
 				pHangHoa.setVisible(false);
 				pLichLamViec.setVisible(false);
 				pDoanhThu.setVisible(false);
+				pNhaBep.setVisible(false);
 				
 				txtTKKhachHang = new JTextField();
 				txtTKKhachHang.setText("Nhập tên hoặc SĐT khách hàng ...");
@@ -495,125 +541,184 @@ public class TongQuan extends JFrame {
 				txtTKKhachHang.setBounds(10, 11, 602, 22);
 				pKhachHang.add(txtTKKhachHang);
 				
+				tbDSKhachHang = new JTable();
+				tbDSKhachHang.setBounds(10, 51, 896, 550);
+				tbDSKhachHang.setVisible(true);
+				pKhachHang.add(tbDSKhachHang);
+				
+				JScrollPane scrollPane = new JScrollPane();
+				scrollPane.setBounds(49, 50, 837, 588);
+				scrollPane.setViewportView(tbDSKhachHang);
+				pKhachHang.add(scrollPane);
+				
 				JButton btnThemKhachHang = new JButton("Thêm khách hàng");
 				btnThemKhachHang.setBounds(700, 2, 140, 35);
 				pKhachHang.add(btnThemKhachHang);
 				
+				//Frame ThemKhachHang
 				btnThemKhachHang.addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent e) {
-						JFrame fThemKH = new  JFrame();
-						fThemKH.setVisible(true);
-						fThemKH.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-						Dimension dimension = Toolkit.getDefaultToolkit().getScreenSize();
-						fThemKH.setBounds(dimension.width / 3, dimension.height / 5, 430, 410);
-						contentTKH = new JPanel();
-						contentTKH.setBorder(new EmptyBorder(5, 5, 5, 5));
-						fThemKH.setContentPane(contentTKH);
-						contentTKH.setLayout(null);
+						//ThemKhachHang
+						CusCustomers _cus = new CusCustomers();
+						ThemKH(_cus);
 						
-						JLabel lblThemKH = new JLabel("Thêm Khách Hàng");
-						lblThemKH.setFont(new Font("UTM Aristote", Font.PLAIN, 26));
-						lblThemKH.setBounds(65, 0, 307, 62);
-						contentTKH.add(lblThemKH);
-						
-						JLabel lblMaKH = new JLabel("Mã khách hàng:");
-						lblMaKH.setBounds(27, 73, 85, 14);
-						contentTKH.add(lblMaKH);
-						
-						txtMaKH = new JTextField();
-						txtMaKH.setHorizontalAlignment(SwingConstants.LEFT);
-						txtMaKH.setBounds(163, 69, 224, 20);
-						contentTKH.add(txtMaKH);
-						txtMaKH.setColumns(10);
-						
-						JLabel lblTenKH = new JLabel("Tên khách hàng:");
-						lblTenKH.setBounds(27, 113, 85, 14);
-						contentTKH.add(lblTenKH);
-						
-						txtTenKH = new JTextField();
-						txtTenKH.setBounds(163, 109, 224, 20);
-						contentTKH.add(txtTenKH);
-						txtTenKH.setColumns(10);
-						
-						JLabel lblNgaySinh = new JLabel("Ngày sinh:");
-						lblNgaySinh.setBounds(28, 153, 84, 14);
-						contentTKH.add(lblNgaySinh);
-
-						JComboBox cbxNhomHang = new JComboBox();
-						cbxNhomHang.setBounds(164, 149, 148, 20);
-						contentTKH.add(cbxNhomHang);
-						
-						JLabel lblSDT = new JLabel("Số điện thoại:");
-						lblSDT.setBounds(27, 193, 85, 14);
-						contentTKH.add(lblSDT);
-						
-						txtSDT = new JTextField();
-						txtSDT.setBounds(163, 189, 224, 20);
-						contentTKH.add(txtSDT);
-						txtSDT.setColumns(10);
-						
-						JLabel lblDiaChi = new JLabel("Địa chỉ:");
-						lblDiaChi.setBounds(27, 233, 85, 14);
-						contentTKH.add(lblDiaChi);
-						
-						txtDiaChi = new JTextField();
-						txtDiaChi.setBounds(163, 229, 224, 20);
-						contentTKH.add(txtDiaChi);
-						txtDiaChi.setColumns(10);
-						
-						JLabel lblNDGDN = new JLabel("Ngày đến gần đây nhất:");
-						lblNDGDN.setBounds(27, 273, 135, 14);
-						contentTKH.add(lblNDGDN);
-						
-						JButton btnThemKH = new JButton("Thêm");
-						btnThemKH.setFont(new Font("Tahoma", Font.BOLD, 13));
-						btnThemKH.setBounds(164, 309, 100, 40);
-						contentTKH.add(btnThemKH);
-						
-						JButton btnThoatKH = new JButton("Thoát");
-						btnThoatKH.setFont(new Font("Tahoma", Font.BOLD, 13));
-						btnThoatKH.setBounds(287, 309, 100, 40);
-						contentTKH.add(btnThoatKH);
-						
-						btnThoatKH.addActionListener(new ActionListener() {
-							public void actionPerformed(ActionEvent e) {
-								// TODO Auto-generated method stub
-								dispose();
-							}
-						});
 					}
 				});
 				
-				String[] cNameKH = new String[]{"Mã",
-		                "Tên khách hàng",
-		                "Ngày sinh",
-		                "Số điện thoại",
-		                "Địa chỉ",
-		                "Ngày đến gần đây nhất"};
-				
-				java.util.List<BaseProduct> products = bllProduct.getProducts(null, 0);
-			    DefaultTableModel tblModelKH = new DefaultTableModel(cNameKH, 0);
+				txtTKKhachHang.addMouseListener(new MouseListener(){
+					public void mouseClicked(MouseEvent e) {
+						txtTKKhachHang.setText("");;
+				    }
 
-				for (int i = 0; i < products.size(); i++){
-					   long ProductId = products.get(i).getProductId();
-					   String Barcode = products.get(i).getBarCode();
-					   String ProductName = products.get(i).getProductName();
-					   long CategoryId = products.get(i).getCategoryId();
-					   BigDecimal Price = products.get(i).getRetailPrice();
-					   BigDecimal Quantity = products.get(i).getQtyAvailable();
-					   Object[] row = {ProductId, Barcode, ProductName, CategoryId, Price, Quantity};
-					   tblModelKH.addRow(row);
+				    public void mousePressed(MouseEvent e) {
+
+				    }
+
+				    public void mouseReleased(MouseEvent e) {
+
+				    }
+
+				    public void mouseEntered(MouseEvent e) {
+
+				    }
+
+				    public void mouseExited(MouseEvent e) {
+
+				    }
+
+				});
+				
+				KeyListener keyListener = new KeyListener() {
+				      public void keyPressed(KeyEvent keyEvent) {
+				    	  
+				      }
+
+					public void keyTyped(KeyEvent e) {
+						// TODO Auto-generated method stub
+						
 					}
+
+					public void keyReleased(KeyEvent e) {
+						String txtSearch = txtTKKhachHang.getText();
+						CustomerDAO _cusDAO = new CustomerDAO();
+						List<CusCustomers> _listCus = _cusDAO.searchCustomer(txtSearch);
+						LoadCustomer(cNameKH, _listCus, tbDSKhachHang);
+					}
+					
+			    };
+				txtTKKhachHang.addKeyListener(keyListener);
 				
-				JScrollPane scrollPaneKH = new JScrollPane();
-				scrollPaneKH.setBounds(49, 50, 837, 588);
-				pKhachHang.add(scrollPaneKH);
+				tbDSKhachHang.setModel(new javax.swing.table.DefaultTableModel(
+			            new Object [][] {
+			                {},
+			                {},
+			                {},
+			                {}
+			            },
+			            new String [] {
+
+			            }
+			        ));
 				
-				tbDSKhachHang = new JTable(tblModelKH);
-				scrollPaneKH.setViewportView(tbDSKhachHang);
+				CustomerDAO _cusDAO = new CustomerDAO();
+				List<CusCustomers> _listCus = _cusDAO.getAllCustomer();
+				LoadCustomer(cNameKH, _listCus, tbDSKhachHang);
+				tbDSKhachHang.addMouseListener(new java.awt.event.MouseAdapter() {
+				    @Override
+				    public void mouseClicked(java.awt.event.MouseEvent evt) {
+				    	CusCustomers _cus = new CusCustomers();
+			        	
+			        	SimpleDateFormat sdf1 = new SimpleDateFormat("MM-dd-yyyy");
+			        	java.util.Date date= new java.util.Date();
+						try {
+							date = sdf1.parse(tbDSKhachHang.getValueAt(tbDSKhachHang.getSelectedRow(), 2).toString());
+						} catch (ParseException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
+			        	java.sql.Date sqlBirthday = new Date(date.getTime()); 
+			        	
+						java.util.Date _d = new java.util.Date();
+						java.sql.Date today = new java.sql.Date(_d.getTime());
+						
+			        	_cus.setAddress(tbDSKhachHang.getValueAt(tbDSKhachHang.getSelectedRow(), 4).toString());
+						_cus.setBirthday(sqlBirthday);
+						_cus.setCode("1");
+						_cus.setCustomerName(tbDSKhachHang.getValueAt(tbDSKhachHang.getSelectedRow(), 1).toString());
+						_cus.setEmail(tbDSKhachHang.getValueAt(tbDSKhachHang.getSelectedRow(), 5).toString());
+						_cus.setPhone(tbDSKhachHang.getValueAt(tbDSKhachHang.getSelectedRow(), 3).toString());
+						//_cus.setCreatedDate(today);
+						_cus.setCreatedUser(GlobalModel.UserId);
+						Long id = Long.parseLong(tbDSKhachHang.getValueAt(tbDSKhachHang.getSelectedRow(), 0).toString());
+						_cus.setId(id);
+			        	
+						ThemKH(_cus);
+				    }
+				});
 			}
 		});
 		
+		//Button NhaBep
+		btnNhaBep.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub
+				pNhaBep.setVisible(true);
+				pDashboard.setVisible(false);
+				pHangHoa.setVisible(false);
+				pLichLamViec.setVisible(false);
+				pDoanhThu.setVisible(false);
+				pKhachHang.setVisible(false);
+
+				contentNB = new JPanel();
+				contentNB.setBorder(new EmptyBorder(5, 5, 5, 5));
+				contentNB.setLayout(new BorderLayout(0, 0));
+				contentNB.setBounds(10, 11, 1008, 600);
+				pNhaBep.add(contentNB);
+				
+				JPanel pABC = new JPanel();
+		        JScrollPane scrollPaneNB = new JScrollPane(pABC);
+		        scrollPaneNB.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_NEVER);
+		        pABC.setPreferredSize(new Dimension(2008, 600));
+		        pABC.setLayout(null);
+		        
+		        final JPanel pPhieuNB = new JPanel();
+		        pPhieuNB.setBounds(10, 10, 300, 590);
+		        pABC.add(pPhieuNB);
+				pPhieuNB.setLayout(null);
+				pPhieuNB.setBackground(Color.white);
+				pPhieuNB.setForeground(Color.white);
+				
+				JLabel lblTenMonAn = new JLabel("Tên món ăn:");
+				lblTenMonAn.setBounds(10, 10, 85, 14);
+				pPhieuNB.add(lblTenMonAn);
+				
+				final JPanel pPhieuNB2 = new JPanel();
+				pPhieuNB2.setBounds(500, 10, 300, 590);
+				pABC.add(pPhieuNB2);
+		        pPhieuNB2.setLayout(null);
+		        pPhieuNB2.setBackground(Color.white);
+		        pPhieuNB2.setForeground(Color.white);
+				
+				JLabel lblTenMonAn2 = new JLabel("Tên món ăn:");
+				lblTenMonAn2.setBounds(10, 10, 85, 14);
+				pPhieuNB2.add(lblTenMonAn2);
+				
+				final JPanel pPhieuNB3 = new JPanel();
+				pPhieuNB3.setBounds(1000, 10, 300, 590);
+				pABC.add(pPhieuNB3);
+		        pPhieuNB3.setLayout(null);
+		        pPhieuNB3.setBackground(Color.white);
+		        pPhieuNB3.setForeground(Color.white);
+				
+				JLabel lblTenMonAn3 = new JLabel("Tên món ăn:");
+				lblTenMonAn3.setBounds(10, 10, 85, 14);
+				pPhieuNB3.add(lblTenMonAn3);
+				
+				contentNB.add(scrollPaneNB);
+			}
+		});
+				
+		//Button DoanhThu
 		btnDoanhThu.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
@@ -622,6 +727,7 @@ public class TongQuan extends JFrame {
 				pHangHoa.setVisible(false);
 				pLichLamViec.setVisible(false);
 				pKhachHang.setVisible(false);
+				pNhaBep.setVisible(false);
 		
 				JRadioButton rbnTNguoiBan = new JRadioButton("Theo người bán");
 				rbnTNguoiBan.setBounds(10, 10, 120, 23);
@@ -688,6 +794,166 @@ public class TongQuan extends JFrame {
 						pTCuaHang.setVisible(true);
 					}
 				});
+			}
+		});
+	}
+	
+	public static String[][] Convert(List<CusCustomers> _list){
+		CustomerDAO _cusDAO = new CustomerDAO();
+        String[][] arrayToReturn = new String[_list.size()][6];
+        for (int i = 0; i < (_list.size()); i++) {
+            arrayToReturn[i] = _cusDAO.convertCustomerRowToArray(_list.get(i));
+        }
+        return arrayToReturn;
+    }
+	
+	public static void LoadCustomer(String[] cNameKH, List<CusCustomers> _listCus, JTable jtable){
+		CommonTableModel customerTableModel = new CommonTableModel(cNameKH, Convert(_listCus));
+		jtable.setModel(customerTableModel);
+	}
+	
+	public static String formatDate (String date, String initDateFormat, String endDateFormat) throws ParseException {
+	    Date initDate = (Date) new SimpleDateFormat(initDateFormat).parse(date);
+	    SimpleDateFormat formatter = new SimpleDateFormat(endDateFormat);
+	    String parsedDate = formatter.format(initDate);
+
+	    return parsedDate;
+	}
+	
+	
+	//Ham ThemKhachHang
+	public void ThemKH(CusCustomers _cus){
+		fThemKH = new JFrame();
+		fThemKH.setVisible(true);
+		fThemKH.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		Dimension dimension = Toolkit.getDefaultToolkit().getScreenSize();
+		fThemKH.setBounds(dimension.width / 3, dimension.height / 5, 430, 410);
+		contentTKH = new JPanel();
+		contentTKH.setBorder(new EmptyBorder(5, 5, 5, 5));
+		fThemKH.setContentPane(contentTKH);
+		contentTKH.setLayout(null);
+		
+		JLabel lblThemKH = new JLabel("Thêm Khách Hàng");
+		lblThemKH.setFont(new Font("UTM Aristote", Font.PLAIN, 26));
+		lblThemKH.setBounds(65, 0, 307, 62);
+		contentTKH.add(lblThemKH);
+		
+		JLabel lblMaKH = new JLabel("Mã khách hàng:");
+		lblMaKH.setBounds(27, 73, 85, 14);
+		contentTKH.add(lblMaKH);
+		
+		txtMaKH = new JTextField();
+		txtMaKH.setHorizontalAlignment(SwingConstants.LEFT);
+		txtMaKH.setBounds(163, 69, 224, 20);
+		contentTKH.add(txtMaKH);
+		txtMaKH.setColumns(10);
+		
+		JLabel lblTenKH = new JLabel("Tên khách hàng:");
+		lblTenKH.setBounds(27, 113, 85, 14);
+		contentTKH.add(lblTenKH);
+		
+		txtTenKH = new JTextField();
+		txtTenKH.setBounds(163, 109, 224, 20);
+		contentTKH.add(txtTenKH);
+		txtTenKH.setColumns(10);
+		
+		JLabel lblNgaySinh = new JLabel("Ngày sinh:");
+		lblNgaySinh.setBounds(28, 153, 84, 14);
+		contentTKH.add(lblNgaySinh);
+
+		dtNgaySinh  = new JXDatePicker();
+		dtNgaySinh.setDate(Calendar.getInstance().getTime());
+		dtNgaySinh.setFormats(new SimpleDateFormat("dd.MM.yyyy"));
+		dtNgaySinh.setBounds(164, 149, 148, 20);
+		contentTKH.add(dtNgaySinh);
+		
+		JLabel lblSDT = new JLabel("Số điện thoại:");
+		lblSDT.setBounds(27, 193, 85, 14);
+		contentTKH.add(lblSDT);
+		
+		txtSDT = new JTextField();
+		txtSDT.setBounds(163, 189, 224, 20);
+		contentTKH.add(txtSDT);
+		txtSDT.setColumns(10);
+		
+		JLabel lblDiaChi = new JLabel("Địa chỉ:");
+		lblDiaChi.setBounds(27, 233, 85, 14);
+		contentTKH.add(lblDiaChi);
+		
+		txtDiaChi = new JTextField();
+		txtDiaChi.setBounds(163, 229, 224, 20);
+		contentTKH.add(txtDiaChi);
+		txtDiaChi.setColumns(10);
+		
+		JLabel lblEmail = new JLabel("Email:");
+		lblEmail.setBounds(27, 273, 135, 14);
+		contentTKH.add(lblEmail);
+		
+		txtEmail = new JTextField();
+		txtEmail.setBounds(163, 269, 224, 20);
+		contentTKH.add(txtEmail);
+		txtEmail.setColumns(10);
+		
+		final JButton btnThemKH = new JButton("Thêm");
+		btnThemKH.setFont(new Font("Tahoma", Font.BOLD, 13));
+		btnThemKH.setBounds(164, 309, 100, 40);
+		contentTKH.add(btnThemKH);
+		
+		JButton btnThoatKH = new JButton("Thoát");
+		btnThoatKH.setFont(new Font("Tahoma", Font.BOLD, 13));
+		btnThoatKH.setBounds(287, 309, 100, 40);
+		contentTKH.add(btnThoatKH);
+		
+		btnThoatKH.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub
+				fThemKH.dispose();
+			}
+		});	
+		
+		if(_cus.getId() != null ){
+			txtMaKH.setText(_cus.getId().toString());
+			txtDiaChi.setText(_cus.getAddress());
+			txtSDT.setText(_cus.getPhone());
+			txtEmail.setText(_cus.getEmail());
+			txtTenKH.setText(_cus.getCustomerName());
+			dtNgaySinh.setDate(_cus.getBirthday());
+			
+			btnThemKH.setText("Sửa");
+		}
+		
+		
+		btnThemKH.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub
+				//String dateString2 = new SimpleDateFormat("yyyy-MM-dd").format(dtNgaySinh.getDate());
+				java.util.Date date = dtNgaySinh.getDate();
+				java.sql.Date sqlDate = new java.sql.Date(date.getTime());
+				java.util.Date _d = new java.util.Date();
+				java.sql.Date today = new java.sql.Date(_d.getTime());
+				//JOptionPane.showMessageDialog(null,today , "InfoBox: ", JOptionPane.INFORMATION_MESSAGE);
+				CusCustomers _cus = new CusCustomers();
+				_cus.setAddress(txtDiaChi.getText());
+				_cus.setBirthday(sqlDate);
+				_cus.setCode("1");
+				_cus.setCustomerName(txtTenKH.getText());
+				_cus.setEmail(txtEmail.getText());
+				_cus.setPhone(txtSDT.getText());
+				
+				CustomerDAO _cusDAO = new CustomerDAO();
+				if(btnThemKH.getText() == "Sửa"){
+					_cus.setId(Long.parseLong(txtMaKH.getText()));
+					_cusDAO.updateCustomer(_cus, GlobalModel.UserId);
+					JOptionPane.showMessageDialog(null,"Sửa thành công!!" , "Thông báo ", JOptionPane.INFORMATION_MESSAGE);
+					fThemKH.dispose();
+				}else{
+					_cus.setCreatedDate(today);
+					_cus.setCreatedUser(GlobalModel.UserId);
+					_cusDAO.createCustomer(_cus);
+					
+					JOptionPane.showMessageDialog(null,"Thêm thành công!!" , "Thông báo ", JOptionPane.INFORMATION_MESSAGE);
+					fThemKH.dispose();
+				}
 			}
 		});
 	}
