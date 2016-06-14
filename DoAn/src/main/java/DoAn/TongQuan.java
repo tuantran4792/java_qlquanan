@@ -2,6 +2,7 @@ package DoAn;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.EventQueue;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
@@ -13,6 +14,7 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableCellRenderer;
 
 import Dao.ProductDAO;
 
@@ -26,10 +28,15 @@ import POJO_entities.BaseProduct;
 
 import javax.swing.JList;
 import javax.swing.JTextField;
+import javax.swing.UIManager;
 import javax.swing.JComboBox;
 import javax.swing.BorderFactory;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
+import java.beans.VetoableChangeListener;
+import java.beans.PropertyChangeEvent;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 public class TongQuan extends JFrame{
 
 	private JPanel contentPane;
@@ -140,7 +147,8 @@ public class TongQuan extends JFrame{
 		                "Tên hàng hóa",
 		                "Nhóm hàng",
 		                "Giá bán",
-		                "Số lượng"};
+		                "Số lượng",
+		                "Input"};
 				
 				java.util.List<BaseProduct> products = bllProduct.getProducts(txtTKHangHoa.getText(), 0);
 			    DefaultTableModel tblModel = new DefaultTableModel(columnNames, 0);
@@ -165,6 +173,11 @@ public class TongQuan extends JFrame{
 		txtTKHangHoa.setColumns(10);
 		
 		JComboBox cbxNhomHang = new JComboBox();
+		cbxNhomHang.addVetoableChangeListener(new VetoableChangeListener() {
+			public void vetoableChange(PropertyChangeEvent evt) {
+				
+			}
+		});
 		cbxNhomHang.setModel(new DefaultComboBoxModel(new String[] {"Nhóm hàng"}));
 		cbxNhomHang.setToolTipText("");
 		cbxNhomHang.setBounds(646, 11, 146, 20);
@@ -184,6 +197,7 @@ public class TongQuan extends JFrame{
 		pHangHoa.add(scrollPane);
 		tbDSHangHoa = new JTable();
 		scrollPane.setViewportView(tbDSHangHoa);
+
 		
 		btnHangHoa.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -199,7 +213,8 @@ public class TongQuan extends JFrame{
 		                "Tên hàng hóa",
 		                "Nhóm hàng",
 		                "Giá bán",
-		                "Số lượng"};
+		                "Số lượng",
+		                ""};
 				
 				java.util.List<BaseProduct> products = bllProduct.getProducts(null, 0);
 			    DefaultTableModel tblModel = new DefaultTableModel(columnNames, 0);
@@ -291,4 +306,6 @@ public class TongQuan extends JFrame{
 			}
 		});
 	}
+	
 }
+

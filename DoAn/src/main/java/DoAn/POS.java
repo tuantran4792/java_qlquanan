@@ -14,20 +14,67 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
+import javax.swing.event.AncestorListener;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.event.AncestorEvent;
+import javax.swing.ImageIcon;
+import java.awt.Color;
 
+import Dao.OrderDAO;
+import Dao.ProductDAO;
+import POJO_entities.BaseProduct;
+import antlr.collections.List;
+
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.io.Console;
+import java.math.BigDecimal;
+
+import javax.swing.JTable;
 public class POS extends JFrame {
 
 	private JPanel contentPane;
 	private JTextField txtKhachHang;
-
+	private ProductDAO bllProduct;
+	private JTable OrderList;
 	/**
 	 * Launch the application.
 	 */
+	private JLabel[] createLabels(){
+			bllProduct = new ProductDAO();	
+
+			int x = 100;
+			int y = 100;
+			java.util.List<BaseProduct> products = bllProduct.getProducts(null, 0);
+
+	        JLabel[] labels = new JLabel[products.size()];
+	        for (int i=0;i< labels.length;i++){
+	            int xtemp = 0;
+	            int ytemp = 0;
+	        	labels[i]=new JLabel(products.get(i).getProductName());
+	            labels[i].setIcon(new ImageIcon(POS.class.getResource("/javax/swing/plaf/basic/icons/image-delayed.png")));
+	            if(i%5 == 0 && i >= 5)
+	            {
+	            	xtemp = x;
+	            	ytemp = (i - 4) *y;
+	            }
+	            else
+	            {
+	            	xtemp = i*x - x;
+	            	ytemp = y; 
+	            }
+	            labels[i].setBounds( xtemp, ytemp , 200 , 100 );
+
+	        }
+	        return labels;
+	    }
+
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
 					POS frame = new POS();
+
 					frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -119,10 +166,6 @@ public class POS extends JFrame {
 		lblTenNhanVien.setBounds(89, 145, 197, 14);
 		pTTHoaDon.add(lblTenNhanVien);
 		
-		JList lstDanhSach = new JList();
-		lstDanhSach.setBounds(10, 181, 323, 228);
-		pTTHoaDon.add(lstDanhSach);
-		
 		JLabel lblTongTien = new JLabel("Tổng tiền:");
 		lblTongTien.setBounds(140, 432, 58, 14);
 		pTTHoaDon.add(lblTongTien);
@@ -153,15 +196,73 @@ public class POS extends JFrame {
 		lblDVT.setBounds(308, 470, 25, 14);
 		pTTHoaDon.add(lblDVT);
 		
+		JScrollPane scrollPane = new JScrollPane();
+		scrollPane.setBounds(10, 181, 323, 240);
+		pTTHoaDon.add(scrollPane);
+		
+		OrderList = new JTable();
+		String[] columnOrders = new String[]{"Mã",
+                "Tên hàng hóa",
+                "Số lượng",
+                "Giá bán",
+                ""};
+	    final DefaultTableModel tblOrder = new DefaultTableModel(columnOrders, 0);
+	    OrderList.setModel(tblOrder);
+		scrollPane.setViewportView(OrderList);
+
+		OrderList.addAncestorListener(new AncestorListener() {
+			public void ancestorAdded(AncestorEvent event) {
+			}
+			public void ancestorMoved(AncestorEvent event) {
+			}
+			public void ancestorRemoved(AncestorEvent event) {
+			}
+		});
+		//scrollPane.setColumnHeaderView(OrderList);
+		
 		JLabel lblThucDon = new JLabel("Thực  Đơn");
 		lblThucDon.setFont(new Font("UTM French Vanilla", Font.PLAIN, 30));
 		lblThucDon.setBounds(777, 81, 129, 38);
 		pPOS.add(lblThucDon);
 		
-		JTextArea tarThucDon = new JTextArea();
-		tarThucDon.setBounds(656, 122, 337, 482);
-		tarThucDon.setEditable(false);
-		pPOS.add(tarThucDon);
-	}
 
+		
+		JTextArea tarThucDon = new JTextArea();
+		tarThucDon.setEditable(false);
+		tarThucDon.addAncestorListener(new AncestorListener() {
+			public void ancestorAdded(AncestorEvent event) {
+			}
+			public void ancestorMoved(AncestorEvent event) {
+			}
+			public void ancestorRemoved(AncestorEvent event) {
+			}
+		});
+		tarThucDon.setBounds(673, 122, 485, 482);
+		pPOS.add(tarThucDon);
+
+		JLabel[] labels=createLabels();
+        for (int i=0;i<labels.length;i++){
+        	tarThucDon.add(labels[i]);
+    		//JLabel lblNewLabel_1 = new JLabel("New label");
+    		labels[i].addMouseListener(new MouseAdapter() {
+    			@Override
+    			public void mouseClicked(MouseEvent e) {
+    	            String label = this.toString() ; 
+    				Object[] row = { 1, label , 1, 20000};
+    				if(tblOrder.equals(row))
+    				{
+    				tblOrder.addRow(row);
+    				}
+    				else{
+    					tblOrder.addRow(row);
+
+    				}
+    				OrderList.setModel(tblOrder);
+    				OrderList.repaint();
+    			}
+    		});
+    		//lblNewLabel_1.setBounds(842, 176, 46, 14);
+    		//pPOS.add(lblNewLabel_1);
+        }
+	}
 }
