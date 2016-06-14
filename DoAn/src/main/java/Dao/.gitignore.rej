@@ -1,0 +1,3 @@
+diff a/DoAn/src/main/java/Dao/.gitignore b/DoAn/src/main/java/Dao/.gitignore	(rejected hunks)
+@@ -0,0 +1 @@
++/ProductDAO.java

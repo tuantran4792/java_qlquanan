@@ -102,21 +102,21 @@ public class POS extends JFrame {
 		
 		JLabel lblSoDoBan = new JLabel("Sơ  Đồ  Bàn");
 		lblSoDoBan.setFont(new Font("UTM French Vanilla", Font.PLAIN, 30));
-		lblSoDoBan.setBounds(73, 81, 157, 38);
+		lblSoDoBan.setBounds(73, 47, 157, 38);
 		pPOS.add(lblSoDoBan);
 		
 		JTextArea tarSoDoBan = new JTextArea();
-		tarSoDoBan.setBounds(10, 122, 300, 558);
+		tarSoDoBan.setBounds(10, 88, 300, 558);
 		tarSoDoBan.setEditable(false);
 		pPOS.add(tarSoDoBan);
 		
 		JLabel lblHoaDon = new JLabel("Hóa  Đơn");
 		lblHoaDon.setFont(new Font("UTM French Vanilla", Font.PLAIN, 30));
-		lblHoaDon.setBounds(425, 81, 129, 38);
+		lblHoaDon.setBounds(425, 47, 129, 38);
 		pPOS.add(lblHoaDon);
 		
 		JPanel pTTHoaDon = new JPanel();
-		pTTHoaDon.setBounds(320, 120, 343, 558);
+		pTTHoaDon.setBounds(320, 86, 343, 558);
 		pTTHoaDon.setBorder(BorderFactory.createTitledBorder("Thông tin hóa đơn"));
 		pPOS.add(pTTHoaDon);
 		pTTHoaDon.setLayout(null);
@@ -222,7 +222,7 @@ public class POS extends JFrame {
 		
 		JLabel lblThucDon = new JLabel("Thực  Đơn");
 		lblThucDon.setFont(new Font("UTM French Vanilla", Font.PLAIN, 30));
-		lblThucDon.setBounds(777, 81, 129, 38);
+		lblThucDon.setBounds(777, 47, 129, 38);
 		pPOS.add(lblThucDon);
 		
 

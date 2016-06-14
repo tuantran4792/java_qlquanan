@@ -1,0 +1,35 @@
+diff a/DoAn/src/main/java/DoAn/TongQuan.java b/DoAn/src/main/java/DoAn/TongQuan.java	(rejected hunks)
+@@ -30,15 +30,32 @@
+ import javax.swing.SwingConstants;
+ import javax.swing.JComboBox;
+ import javax.swing.BorderFactory;
++import javax.swing.ButtonGroup;
+ import javax.swing.DefaultComboBoxModel;
+ import javax.swing.JButton;
++import javax.swing.JRadioButton;
+ public class TongQuan extends JFrame {
+ 
+ 	private JPanel contentPane, contentTH, contentTKH;
+-	private JTextField txtTKHangHoa, txtTKLichLV, txtTKKhachHang;
++	private JTextField txtTKHangHoa, txtTKLichLV, txtTKKhachHang, txtTKLich;
+ 	private JTextField txtMaHang, txtTenHang, txtNCC, txtDonGia, txtVAT;
+ 	private JTextField txtMaKH, txtTenKH, txtSDT, txtDiaChi;
+ 	private JTable tbDSHangHoa, tbDSKhachHang;
++	private String[] headers = new String[] {
++            "ID",
++            "Code",
++            "Tên khách hàng",
++            "Điện thoại",
++            "Địa chỉ",
++            "Ngày sinh",
++            "Email",
++            "Xóa",
++            "Ngày tạo",
++            "Người tạo",
++            "Ngày cập nhật",
++            "Người cập nhật",
++            "Ngày xóa",
++            "Người xóa"};
+ 	ProductDAO bllProduct, model;
+ 
+ 	/**
