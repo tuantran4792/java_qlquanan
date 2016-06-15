@@ -25,6 +25,7 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
 
+import org.hibernate.jpa.event.internal.core.JpaAutoFlushEventListener;
 import org.hibernate.type.CustomCollectionType;
 import org.jdesktop.swingx.JXDatePicker;
 
@@ -53,15 +54,19 @@ import javax.swing.ButtonGroup;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
 import javax.swing.JRadioButton;
+import javax.swing.JTabbedPane;
+import javax.swing.border.TitledBorder;
+import javax.swing.UIManager;
 public class TongQuan extends JFrame {
 
-	private JPanel contentPane, contentTH, contentTKH, contentNB;
+	private JPanel contentPane, contentTH, contentTKH, contentNB, contentTK;
 	private JTextField txtTKHangHoa, txtTKLichLV, txtTKKhachHang, txtTKLich;
 	private JTextField txtMaHang, txtTenHang, txtNCC, txtDonGia, txtVAT;
 	private JTextField txtMaKH, txtTenKH, txtSDT, txtDiaChi, txtEmail;
+	private JTextField txtUser, txtTenTK, txtMatKhau;
 	private JXDatePicker dtNgaySinh;
-	private JTable tbDSHangHoa, tbDSKhachHang;
-	private static JFrame fThemHang, fThemKH;
+	private JTable tbDSHangHoa, tbDSKhachHang, tbDSTaiKhoan;
+	private static JFrame fThemHang, fThemKH, fTaoTK;
 	/*private String[] headers = new String[] {
             "ID",
             "Code",
@@ -299,8 +304,19 @@ public class TongQuan extends JFrame {
 		JButton btnDoanhThu = new JButton("Doanh thu");
 		btnDoanhThu.setBounds(10, 291, 102, 33);
 		contentPane.add(btnDoanhThu);
-				
-				
+			
+		
+		//ThietLap
+		final JPanel pThietLap = new JPanel();
+		pThietLap.setBounds(166, 11, 1008, 639);
+		contentPane.add(pThietLap);
+		pThietLap.setLayout(null);
+		pThietLap.setVisible(false);
+	
+		JButton btnThietLap = new JButton("Thiết lập");
+		btnThietLap.setBounds(10, 335, 102, 33);
+		contentPane.add(btnThietLap);
+		
 		
 		
 		//Button Dashboard
@@ -313,6 +329,7 @@ public class TongQuan extends JFrame {
 				pKhachHang.setVisible(false);
 				pDoanhThu.setVisible(false);
 				pNhaBep.setVisible(false);
+				pThietLap.setVisible(false);
 			}
 		});
 		
@@ -326,6 +343,7 @@ public class TongQuan extends JFrame {
 				pKhachHang.setVisible(false);
 				pDoanhThu.setVisible(false);
 				pNhaBep.setVisible(false);
+				pThietLap.setVisible(false);
 				bllProduct = new ProductDAO();
 
 				txtTKHangHoa = new JTextField();
@@ -385,7 +403,7 @@ public class TongQuan extends JFrame {
 						
 						JLabel lblNhomHang = new JLabel("Nhóm hàng:");
 						lblNhomHang.setBounds(28, 153, 84, 14);
-						contentPane.add(lblNhomHang);
+						contentTH.add(lblNhomHang);
 						
 						JComboBox cbxNhomHang = new JComboBox();
 						cbxNhomHang.setBounds(133, 149, 148, 20);
@@ -496,6 +514,7 @@ public class TongQuan extends JFrame {
 				pDashboard.setVisible(false);
 				pDoanhThu.setVisible(false);
 				pNhaBep.setVisible(false);
+				pThietLap.setVisible(false);
 				
 				JList lstLichLamViec = new JList();
 				lstLichLamViec.setBounds(10, 51, 896, 550);
@@ -534,6 +553,7 @@ public class TongQuan extends JFrame {
 				pLichLamViec.setVisible(false);
 				pDoanhThu.setVisible(false);
 				pNhaBep.setVisible(false);
+				pThietLap.setVisible(false);
 				
 				txtTKKhachHang = new JTextField();
 				txtTKKhachHang.setText("Nhập tên hoặc SĐT khách hàng ...");
@@ -668,6 +688,7 @@ public class TongQuan extends JFrame {
 				pLichLamViec.setVisible(false);
 				pDoanhThu.setVisible(false);
 				pKhachHang.setVisible(false);
+				pThietLap.setVisible(false);
 
 				contentNB = new JPanel();
 				contentNB.setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -728,6 +749,7 @@ public class TongQuan extends JFrame {
 				pLichLamViec.setVisible(false);
 				pKhachHang.setVisible(false);
 				pNhaBep.setVisible(false);
+				pThietLap.setVisible(false);
 		
 				JRadioButton rbnTNguoiBan = new JRadioButton("Theo người bán");
 				rbnTNguoiBan.setBounds(10, 10, 120, 23);
@@ -796,8 +818,154 @@ public class TongQuan extends JFrame {
 				});
 			}
 		});
+		
+		
+		//Button ThietLap
+		btnThietLap.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub
+				pThietLap.setVisible(true);
+				pDashboard.setVisible(false);
+				pHangHoa.setVisible(false);
+				pLichLamViec.setVisible(false);
+				pKhachHang.setVisible(false);
+				pNhaBep.setVisible(false);
+				pDoanhThu.setVisible(false);
+				
+				JPanel contentTaiKhoan = new JPanel();
+				contentTaiKhoan.setBounds(166, 11, 1008, 639);
+				contentTaiKhoan.setLayout(null);
+				
+				JPanel contentBan = new JPanel();
+				contentBan.setBounds(166, 11, 1008, 639);
+				contentBan.setLayout(null);
+				
+				JPanel contentCa = new JPanel();
+				contentBan.setBounds(166, 11, 1008, 639);
+				contentBan.setLayout(null);
+				
+				JTabbedPane tabTaiKhoan = new JTabbedPane();
+				tabTaiKhoan.setBounds(10, 10, 950, 600);
+				tabTaiKhoan.addTab("Tài khoản", contentTaiKhoan);
+				tabTaiKhoan.setMnemonicAt(0, KeyEvent.VK_1);
+				tabTaiKhoan.addTab("Bàn", contentBan);
+				tabTaiKhoan.setMnemonicAt(1, KeyEvent.VK_1);
+				tabTaiKhoan.addTab("Ca", contentCa);
+				tabTaiKhoan.setMnemonicAt(2, KeyEvent.VK_1);
+				pThietLap.add(tabTaiKhoan);
+				
+				//Tab TaiKhoan
+				txtUser = new JTextField();
+				txtUser.setBounds(10, 11, 480, 20);
+				contentTaiKhoan.add(txtUser);
+				txtUser.setColumns(10);
+				
+				JButton btnTaoTK = new JButton("Tạo tài khoản");
+				btnTaoTK.setBounds(500, 8, 120, 25);
+				contentTaiKhoan.add(btnTaoTK);
+				
+					//Frame TaoTaiKhoan
+				btnTaoTK.addActionListener(new ActionListener() {
+					public void actionPerformed(ActionEvent e) {
+						fTaoTK = new JFrame();
+						fTaoTK.setVisible(true);
+						model = new ProductDAO();
+						fTaoTK.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+						Dimension dimension = Toolkit.getDefaultToolkit().getScreenSize();
+						fTaoTK.setBounds(dimension.width / 3, dimension.height / 5, 405, 290);
+						contentTK = new JPanel();
+						contentTK.setBorder(new EmptyBorder(5, 5, 5, 5));
+						fTaoTK.setContentPane(contentTK);
+						contentTK.setLayout(null);
+						
+						JLabel lblTaoTK = new JLabel("Tạo Tài Khoản");
+						lblTaoTK.setFont(new Font("UTM Aristote", Font.PLAIN, 26));
+						lblTaoTK.setBounds(60, 8, 220, 45);
+						contentTK.add(lblTaoTK);
+						
+						JLabel lblTenTK = new JLabel("Tên tài khoản:");
+						lblTenTK.setBounds(27, 73, 85, 14);
+						contentTK.add(lblTenTK);
+						
+						txtTenTK = new JTextField();
+						txtTenTK.setToolTipText("Nhập tên tài khoản");
+						txtTenTK.setHorizontalAlignment(SwingConstants.LEFT);
+						txtTenTK.setBounds(132, 69, 224, 20);
+						contentTK.add(txtTenTK);
+						txtTenTK.setColumns(10);
+						
+						JLabel lblMatKhau = new JLabel("Mật khẩu:");
+						lblMatKhau.setBounds(27, 113, 85, 14);
+						contentTK.add(lblMatKhau);
+						
+						txtMatKhau = new JTextField();
+						txtMatKhau.setBounds(132, 109, 224, 20);
+						contentTK.add(txtMatKhau);
+						txtMatKhau.setColumns(10);
+						
+						JLabel lblLoaiTK = new JLabel("Loại tài khoản:");
+						lblLoaiTK.setBounds(28, 153, 84, 14);
+						contentTK.add(lblLoaiTK);
+						
+						JComboBox cbxLoaiTK = new JComboBox();
+						cbxLoaiTK.setBounds(133, 149, 148, 20);
+						contentTK.add(cbxLoaiTK);
+						
+						JButton btnTaoTK = new JButton("Tạo");
+						btnTaoTK.addActionListener(new ActionListener() {
+							public void actionPerformed(ActionEvent e) {
+								
+							}
+						});
+						btnTaoTK.setFont(new Font("Tahoma", Font.BOLD, 13));
+						btnTaoTK.setBounds(133, 190, 100, 40);
+						contentTK.add(btnTaoTK);
+						
+						JButton btnThoatTK = new JButton("Thoát");
+						btnThoatTK.setFont(new Font("Tahoma", Font.BOLD, 13));
+						btnThoatTK.setBounds(256, 190, 100, 40);
+						contentTK.add(btnThoatTK);
+						
+						btnThoatTK.addActionListener(new ActionListener() {
+							public void actionPerformed(ActionEvent e) {
+								// TODO Auto-generated method stub
+								fTaoTK.dispose();
+							}
+						});
+					}
+				});
+				
+				String[] columnNames = new String[]{"Mã",
+		                "Tên hàng hóa",
+		                "Nhóm hàng",
+		                "Giá bán",
+		                "Số lượng"};
+				
+				java.util.List<BaseProduct> products = bllProduct.getProducts(null, 0);
+			    DefaultTableModel tblModel = new DefaultTableModel(columnNames, 0);
+
+				for (int i = 0; i < products.size(); i++){
+					   long ProductId = products.get(i).getProductId();
+					   String Barcode = products.get(i).getBarCode();
+					   String ProductName = products.get(i).getProductName();
+					   long CategoryId = products.get(i).getCategoryId();
+					   BigDecimal Price = products.get(i).getRetailPrice();
+					   BigDecimal Quantity = products.get(i).getQtyAvailable();
+					   Object[] row = { Barcode, ProductName, CategoryId, Price, Quantity};
+					   tblModel.addRow(row);
+					}
+				
+				JScrollPane scrollPane = new JScrollPane();
+				scrollPane.setBounds(10, 50, 920, 510);
+				contentTaiKhoan.add(scrollPane);
+				
+				tbDSTaiKhoan = new JTable(tblModel);
+				scrollPane.setViewportView(tbDSTaiKhoan);
+			}
+		});
 	}
-	
+		
+		
 	public static String[][] Convert(List<CusCustomers> _list){
 		CustomerDAO _cusDAO = new CustomerDAO();
         String[][] arrayToReturn = new String[_list.size()][6];
@@ -919,6 +1087,7 @@ public class TongQuan extends JFrame {
 			txtTenKH.setText(_cus.getCustomerName());
 			dtNgaySinh.setDate(_cus.getBirthday());
 			
+			lblThemKH.setText("Sửa Khách Hàng");
 			btnThemKH.setText("Sửa");
 		}
 		
